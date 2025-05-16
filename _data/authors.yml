@@ -1,22 +1,21 @@
-"Your Name":
+"Yu Chai": 
   bold: true
 
-"Robert White":
-  url: https://www.google.com/?q=Robert+White
+# "Jingsong Yang":
+#   url: https://www.researchgate.net/profile/Jingsong-Yang
 
-"Charles Green (MIT)":
-  name: Charles Green
-  url: https://www.google.com/?q=Charles+Green+MIT
+# "Shikai Guo":
+#   url: https://scholar.google.com/citations?user=8P9xfewAAAAJ
 
-"Charles Green (Stanford)":
-  name: Charles Green
-  url: https://www.google.com/?q=Charles+Green+Stanford
+# "Charles Green (Stanford)":
+#   name: Charles Green
+#   url: https://www.google.com/?q=Charles+Green+Stanford
 
-"Garrett Harris":
-  url: https://www.google.com/?q=Garrett+Harris
+# "Garrett Harris":
+#   url: https://www.google.com/?q=Garrett+Harris
 
-"James Wang":
-  url: https://www.google.com/?q=James+Wang
+# "James Wang":
+#   url: https://www.google.com/?q=James+Wang
 
-"John Doe":
-  url: https://www.google.com/?q=John+Doe
+# "John Doe":
+#   url: https://www.google.com/?q=John+Doe

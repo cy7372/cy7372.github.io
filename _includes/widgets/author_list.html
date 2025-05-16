@@ -1,20 +1,31 @@
 {%- assign authors = include.authors -%}
-{%- assign has_eq_contrib = false -%}
+{%- assign has_co_first = false -%}
 {%- assign has_corresponding = false -%}
 
 {%- for _key in authors -%}
-    {%- assign last_char = _key | slice: -1, 1%}
-    {%- if last_char == "*" -%}
-        {%- assign key = _key | split: "*" | first -%}
+    {%- assign name_str = _key -%}
+    {%- assign mark = "" -%}
+    {%- assign name_len = name_str | size -%}
+    {%- assign last_one_index = name_len | minus: 1 -%}
+    {%- assign last_two_index = name_len | minus: 2 -%}
+    {%- assign last_one = name_str | slice: last_one_index, 1 -%}
+    {%- assign last_two = name_str | slice: last_two_index, 2 -%}
+    
+    {%- if last_two == "‡*" or last_two == "*‡" -%}
+        {%- assign key = name_str | slice: 0, last_two_index -%}
+        {%- assign mark = "‡*" -%}
+        {%- assign has_co_first = true -%}
+        {%- assign has_corresponding = true -%}
+    {%- elsif last_one == "‡" -%}
+        {%- assign key = name_str | slice: 0, last_one_index -%}
+        {%- assign mark = "‡" -%}
+        {%- assign has_co_first = true -%}
+    {%- elsif last_one == "*" -%}
+        {%- assign key = name_str | slice: 0, last_one_index -%}
         {%- assign mark = "*" -%}
-        {%- assign has_eq_contrib = true -%}
-    {%- elsif last_char == "#" -%}
-        {%- assign key = _key | split: "#" | first -%}
-        {%- assign mark = '<sup>#</sup>' -%}
         {%- assign has_corresponding = true -%}
     {%- else -%}
-        {%- assign key = _key -%}
-        {%- assign mark = "" -%}
+        {%- assign key = name_str -%}
     {%- endif -%}
 
     {%- assign info = site.data.authors[key] -%}
@@ -25,10 +36,9 @@
         {%- assign name = key -%}
     {%- endif -%}
 
+    {%- assign display_name = name | append: mark -%}
     {%- if info['bold'] == true -%}
-        {%- assign display_name = name | append: mark | prepend: "<strong>" | append: "</strong>" -%}
-    {%- else -%}
-        {%- assign display_name = name | append: mark -%}
+        {%- assign display_name = display_name | prepend: "<strong>" | append: "</strong>" -%}
     {%- endif -%}
     
     {%- if info['url'] -%}
@@ -38,17 +48,18 @@
             {{ display_name }}{%- if forloop.index < authors.size -%}, {% endif -%}
         </span>
     {%- endif -%}
-
 {%- endfor -%}
 
-{%- if has_eq_contrib or has_corresponding %}
-<mark>(
-    {%- if has_eq_contrib -%}
-        * <i> equal contribution</i>
+{%- if has_co_first or has_corresponding %}
+<mark>
+(
+    {%- if has_co_first -%}
+        &#8225; Co–first authors
     {%- endif -%}
+    {%- if has_co_first and has_corresponding -%}; {% endif -%}
     {%- if has_corresponding -%}
-        {%- if has_eq_contrib -%}, {% endif -%}
-        <sup>#</sup> <i> corresponding author</i>
+        * Corresponding authors
     {%- endif -%}
-)</mark>
+)
+</mark>
 {%- endif -%}
