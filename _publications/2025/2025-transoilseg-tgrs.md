@@ -1,11 +1,12 @@
 ---
 title: "TransOilSeg: A Novel SAR Oil Spill Detection Method Addressing Data Limitations and Look-Alike Confusions"
-date: 2025-03-01
+date: 2025-03-03
 selected: true
 pub: "IEEE Transactions on Geoscience and Remote Sensing"
-pub_date: "2025"
-abstract: >-
-  We propose TransOilSeg, a novel SAR oil spill detection framework designed to overcome data scarcity and look-alike confusion. The method achieves state-of-the-art performance on benchmark datasets and provides robust results for real-world scenarios.
+pub_date: "Mar. 3, 2025"
+article_no: "5206216"
+doi: "10.1109/TGRS.2025.3542810"
+abstract: 
 authors:
   - Yu Chai
   - Xinhai Han
@@ -15,6 +16,6 @@ authors:
   - Peng Chen
   - Gang Zheng
 links:
-  Paper: https://doi.org/10.1109/TGRS.2025.3542810
+  Paper: https://ieeexplore.ieee.org/abstract/document/10909301
 ---
 *Corresponding author

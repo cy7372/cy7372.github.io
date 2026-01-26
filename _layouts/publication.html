@@ -1,0 +1,62 @@
+---
+layout: default
+---
+<div class="row mt-5">
+    <div class="col-md-10 mx-auto">
+        <h2 class="mb-3 font-weight-bold">{{ page.title }}</h2>
+        
+        <div class="mb-4 text-muted">
+            {% include widgets/author_list.html authors=page.authors %}
+        </div>
+
+        <div class="mb-4">
+             <div class="font-italic text-secondary" style="font-size: 1.1rem;">
+                 {{ page.pub }}
+                 {% if page.pub_date %}
+                 <span class="ml-2">({{ page.pub_date }})</span>
+                 {% endif %}
+             </div>
+             
+             <div class="mt-2">
+                 {% if page.article_no %}
+                 <span class="mr-3 text-muted">Art. no. {{ page.article_no }}</span>
+                 {% endif %}
+                 
+                 {% if page.doi %}
+                 <span class="text-muted">DOI: <a href="https://doi.org/{{ page.doi }}" target="_blank" class="text-muted" style="text-decoration: underline;">{{ page.doi }}</a></span>
+                 {% endif %}
+             </div>
+        </div>
+
+        {% if page.abstract %}
+        <div class="card mb-4 shadow-sm border-light">
+            <div class="card-body bg-light">
+                <h5 class="card-title font-weight-bold text-dark"><i class="fas fa-align-left mr-2"></i>Abstract</h5>
+                <p class="card-text text-justify" style="font-size: 1.05rem; line-height: 1.6;">{{ page.abstract }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if page.links %}
+        <div class="mb-4">
+            {% for link in page.links %}
+                <a href="{{ link[1] }}" class="btn btn-outline-primary btn-sm mr-2 mb-2" target="_blank">
+                    {% if link[0] == 'Paper' %}<i class="fas fa-file-alt mr-1"></i>{% endif %}
+                    {% if link[0] == 'Code' %}<i class="fab fa-github mr-1"></i>{% endif %}
+                    {{ link[0] }}
+                </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <div class="content text-justify">
+            {{ content }}
+        </div>
+        
+        <div class="mt-5 mb-4 text-center">
+            <a href="{{ '/' | relative_url }}" class="btn btn-link text-muted"><i class="fas fa-arrow-left mr-1"></i> Back to Home</a>
+        </div>
+    </div>
+</div>

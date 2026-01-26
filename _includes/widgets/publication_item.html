@@ -15,14 +15,25 @@
         {% if item.pub_date %}
         <span style="margin-left:0.5em;">{{ item.pub_date }}</span>
         {% endif %}
+        
+        {% if item.article_no %}
+        <span style="margin-left:0.5em;">Art. no. {{ item.article_no }}</span>
+        {% endif %}
+
+        {% if item.doi %}
+        <span style="margin-left:0.5em;">DOI: <a href="https://doi.org/{{ item.doi }}" target="_blank" style="color: #555; text-decoration: underline;">{{ item.doi }}</a></span>
+        {% endif %}
+
         {% if item.pub_last %}{{ item.pub_last }}{% endif %}
     </div>
-    <!-- 摘要 -->
+    <!-- 摘要（已移除） -->
+    {% comment %}
     {% if item.abstract %}
     <div class="mb-2" style="color:#6c757d; font-size: 0.97rem; line-height: 1.8;">
         {{ item.abstract }}
     </div>
     {% endif %}
+    {% endcomment %}
     <!-- 链接 -->
     {% if item.links %}
     <div class="mt-1" style="font-size:0.96rem;">

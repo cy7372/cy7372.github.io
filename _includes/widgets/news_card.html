@@ -1,4 +1,5 @@
-{% assign news_by_year = site.news | sort: "date" | reverse | slice: 0, include.limit | group_by_exp: "item", "item.date | date: '%Y'" -%}
+{% assign all_news = site.news | concat: site.publications | sort: "date" | reverse | slice: 0, include.limit %}
+{% assign news_by_year = all_news | group_by_exp: "item", "item.date | date: '%Y'" -%}
 
 <div class="my-3 bg-white shadow-sm rounded-sm">
     <h6 class="p-3 mb-0 border-bottom border-gray"><i class="fas fa-rss"></i> News</h6>
@@ -9,19 +10,28 @@
             <div class="mr-3 text-muted my-1">{{ year.name }}</div>
             <div class="media-body">
                 {% for item in year.items %}
-                {%- assign pub_parts = item.title | split: " was published in " -%}
-                {%- assign acc_parts = item.title | split: " was accepted by " -%}
                 <div class="my-2 d-flex flex-column flex-md-row align-items-md-center">
                     <div>
-                        {%- if pub_parts.size > 1 -%}
-                            <b>{{ pub_parts[0] }}</b>
-                            <div class="text-muted small mt-1">Published in {{ pub_parts[1] }}</div>
-                        {%- elsif acc_parts.size > 1 -%}
-                            <b>{{ acc_parts[0] }}</b>
-                            <div class="text-muted small mt-1">Accepted by {{ acc_parts[1] }}</div>
-                        {%- else -%}
-                            <b>{{ item.title }}</b>
-                        {%- endif -%}
+                        {% if item.collection == 'publications' or item.pub %}
+                             <i class="fas fa-book-open text-muted mr-1"></i>
+                             <span style="font-size: 0.9em;" class="text-secondary font-weight-normal mr-1">Our paper</span>
+                             <b><a href="{{ item.url }}" class="text-dark">{{ item.title }}</a></b>
+                             {% if item.pub %}
+                                <div class="text-muted small mt-1">Published in {{ item.pub }}</div>
+                             {% endif %}
+                        {% else %}
+                            {%- assign pub_parts = item.title | split: " was published in " -%}
+                            {%- assign acc_parts = item.title | split: " was accepted by " -%}
+                            {%- if pub_parts.size > 1 -%}
+                                <b>{{ pub_parts[0] }}</b>
+                                <div class="text-muted small mt-1">Published in {{ pub_parts[1] }}</div>
+                            {%- elsif acc_parts.size > 1 -%}
+                                <b>{{ acc_parts[0] }}</b>
+                                <div class="text-muted small mt-1">Accepted by {{ acc_parts[1] }}</div>
+                            {%- else -%}
+                                <b>{{ item.title }}</b>
+                            {%- endif -%}
+                        {% endif %}
                     </div>
                     <div class="ml-md-auto mt-2 mt-md-0 text-muted no-break">
                         <i>{{ item.date | date: "%b %Y" }}</i>

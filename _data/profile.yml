@@ -27,7 +27,7 @@ orcid: 0009-0004-3106-0134
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    My research currently focuses on AI for Science, specifically within the marine domain. My work involves applications such as marine remote sensing, meteorological monitoring, and underwater robotics. 
+    My research currently focuses on AI for Science, specifically within the marine domain. My work involves applications such as marine remote sensing, meteorological forecasting, and underwater robotics. 
   </p>
 
   <p>
@@ -65,13 +65,28 @@ experience:
 #   logo: /assets/images/badges/SOED_logo.png 
 #   # position: Research Intern
 #   date: Sep. 2023 - present
-- name: Second Institute Of Oceanography, MNR
+- name: Easten Institute of TECHNOLOGY
+  logo: /assets/images/badges/EIT_logo.png
+  position: Research Assistant
+  date: Sep. 2025 - Dec. 2025
+
+
+- name: Shanghai Meteorological Service Center
+  logo: /assets/images/badges/SMS_logo.jpg
+  position: Intern
+  date: Jul. 2025 - Aug. 2025
+
+- name: Second Institute of Oceanography, MNR
   logo: /assets/images/badges/SIO_logo.png
-  date: Sep. 2023 - present
-- name: Trusted Software and Intelligent Computing Lab
-  logo: /assets/images/badges/TSMC_logo.jpg 
-  # position: Research Intern
-  date: Jul. 2020 - Jun. 2023
+  position: Intern & Joint Training
+  date: Oct. 2022 - Apr. 2026
+
+
+
+# - name: Trusted Software and Intelligent Computing Lab
+#   logo: /assets/images/badges/TSMC_logo.jpg 
+#   position: Research Intern
+#   date: Jul. 2020 - Jun. 2023
 
   
 
