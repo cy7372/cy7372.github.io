@@ -17,7 +17,7 @@
                              <span style="font-size: 0.9em;" class="text-secondary font-weight-normal mr-1">Our paper</span>
                              <b><a href="{{ item.url }}" class="text-dark">{{ item.title }}</a></b>
                              {% if item.pub %}
-                                <div class="text-muted small mt-1">Published in {{ item.pub }}</div>
+                                <span class="text-muted small ml-1">published in <span class="font-weight-bold font-italic">{{ item.pub }}</span></span>
                              {% endif %}
                         {% else %}
                             {%- assign pub_parts = item.title | split: " was published in " -%}

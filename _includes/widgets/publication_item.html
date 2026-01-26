@@ -5,6 +5,40 @@
     <h5 class="font-weight-bold mt-1 mb-2" style="font-size: 1.2rem;">
         <a href="{{ item.url }}" class="text-dark">{{ item.title }}</a>
     </h5>
+    
+    <!-- 自己的身份标签 -->
+    {% assign my_name = site.data.profile.primary_name %}
+    {% assign authors = item.authors %}
+    {% assign role = "" %}
+    {% assign badge_class = "badge-secondary" %}
+
+    {% for author in authors %}
+        {% assign clean_name = author | remove: "*" | remove: "‡" %}
+        {% if clean_name == my_name %}
+            {% if forloop.first %}
+                {% assign role = "First Author" %}
+                {% assign badge_class = "badge-primary" %}
+            {% elsif author contains "*" %}
+                {% assign role = "Corresponding Author" %}
+                {% assign badge_class = "badge-warning" %}
+            {% else %}
+                {% if forloop.index == 2 %}
+                     {% assign role = "Second Author" %}
+                     {% assign badge_class = "badge-info" %}
+                {% else %}
+                     {% assign role = "Co-Author" %}
+                     {% assign badge_class = "badge-secondary" %}
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    {% if role != "" %}
+    <div class="mb-2">
+        <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.85rem; opacity: 0.9;">{{ role }}</span>
+    </div>
+    {% endif %}
+
     <!-- 作者 -->
     <div class="mb-1" style="font-size: 1.01rem; color: #333;">
         {% include widgets/author_list.html authors=item.authors %}

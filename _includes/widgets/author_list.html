@@ -21,6 +21,7 @@
 {%- endfor -%}
 
 {%- if has_co_first or has_corresponding %}
+{% comment %}
 <div class="mb-1 text-muted small" style="font-size: 0.9em;">
     {%- if has_co_first -%}
         &#8225; Co–first authors
@@ -30,6 +31,7 @@
         * Corresponding authors
     {%- endif -%}
 </div>
+{% endcomment %}
 {%- endif -%}
 
 {%- for _key in authors -%}
