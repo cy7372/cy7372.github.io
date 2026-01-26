@@ -5,24 +5,76 @@ layout: default
     <div class="col-md-10 mx-auto">
         <h2 class="mb-3 font-weight-bold">{{ page.title }}</h2>
         
+        <!-- 自己的身份标签 -->
+        {% assign my_name = site.data.profile.primary_name %}
+        {% assign authors = page.authors %}
+        {% assign role = "" %}
+        {% assign badge_class = "badge-secondary" %}
+
+        {% for author in authors %}
+            {% assign clean_name = author | remove: "*" | remove: "‡" %}
+            {% if clean_name == my_name %}
+                {% if forloop.first %}
+                    {% assign role = "First Author" %}
+                    {% assign badge_class = "badge-primary" %}
+                {% elsif author contains "‡" %}
+                    {% assign role = "Co-first Author" %}
+                    {% assign badge_class = "badge-primary" %}
+                {% elsif author contains "*" %}
+                    {% assign role = "Corresponding Author" %}
+                    {% assign badge_class = "badge-warning" %}
+                {% else %}
+                    {% if forloop.index == 2 %}
+                         {% assign role = "Second Author" %}
+                         {% assign badge_class = "badge-info" %}
+                    {% else %}
+                         {% assign role = "Co-Author" %}
+                         {% assign badge_class = "badge-secondary" %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if role != "" %}
+        <div class="mb-3">
+            <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.9rem; padding: 0.4em 0.8em;">
+                {% if role == "Corresponding Author" %}*{% endif %}
+                {{ role }}
+            </span>
+        </div>
+        {% endif %}
+
         <div class="mb-4 text-muted">
             {% include widgets/author_list.html authors=page.authors %}
         </div>
 
-        <div class="mb-4">
-             <div class="font-italic text-secondary" style="font-size: 1.1rem;">
-                 {{ page.pub }}, {{ page.date | date: "%b %d, %Y" }}
-             </div>
-             
-             <div class="mt-2">
-                 {% if page.article_no %}
-                 <span class="mr-3 text-muted">Art. no. {{ page.article_no }}</span>
-                 {% endif %}
-                 
-                 {% if page.doi %}
-                 <span class="text-muted">DOI: <a href="https://doi.org/{{ page.doi }}" target="_blank" class="text-muted" style="text-decoration: underline;">{{ page.doi }}</a></span>
-                 {% endif %}
-             </div>
+        <!-- Publication Metadata -->
+        <div class="mb-4 p-3 bg-light rounded border-left border-primary" style="border-left-width: 4px !important;">
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Published in:</div>
+                <div class="col-md-9 font-italic text-dark">{{ page.pub }}</div>
+            </div>
+            
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Date of Publication:</div>
+                <div class="col-md-9">{{ page.date | date: "%d %B %Y" }}</div>
+            </div>
+
+            {% if page.article_no %}
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Article No.:</div>
+                <div class="col-md-9">{{ page.article_no }}</div>
+            </div>
+            {% endif %}
+
+            {% if page.doi %}
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">DOI:</div>
+                <div class="col-md-9">
+                    <a href="https://doi.org/{{ page.doi }}" target="_blank" class="text-primary">{{ page.doi }}</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         {% if page.abstract %}

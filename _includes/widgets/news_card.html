@@ -13,12 +13,19 @@
                 <div class="my-2 d-flex flex-column flex-md-row align-items-md-center">
                     <div>
                         {% if item.collection == 'publications' or item.pub %}
-                             <i class="far fa-file-alt text-muted mr-1"></i>
-                             <span style="font-size: 0.9em;" class="text-secondary font-weight-normal mr-1">Our paper</span>
-                             <b><a href="{{ item.url }}" class="text-dark">{{ item.title }}</a></b>
-                             {% if item.pub %}
-                                <span class="text-muted small ml-1">published in <span class="font-weight-bold font-italic">{{ item.pub }}</span></span>
-                             {% endif %}
+                             <div class="d-flex align-items-baseline">
+                                 <i class="far fa-file-alt text-muted mr-2" style="font-size: 0.9em; position: relative; top: 1px;"></i>
+                                 <div>
+                                     <span style="font-size: 0.85em;" class="text-uppercase text-secondary font-weight-bold mr-1">Paper</span>
+                                     <b style="font-size: 1.05em;"><a href="{{ item.url }}" class="text-dark">{{ item.title }}</a></b>
+                                     {% if item.pub %}
+                                        <div class="text-muted small mt-1">
+                                            <i class="fas fa-arrow-right text-muted mr-1" style="font-size: 0.7em;"></i>
+                                            Published in <span class="font-weight-bold font-italic">{{ item.pub }}</span>
+                                        </div>
+                                     {% endif %}
+                                 </div>
+                             </div>
                         {% else %}
                             {%- assign pub_parts = item.title | split: " was published in " -%}
                             {%- assign acc_parts = item.title | split: " was accepted by " -%}

@@ -17,4 +17,3 @@ authors:
 links:
   Paper: https://ieeexplore.ieee.org/abstract/document/10909301
 ---
-*Corresponding author

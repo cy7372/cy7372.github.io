@@ -17,3 +17,5 @@ links:
   Paper: "https://doi.org/10.1109/tce.2025.3535638"
 ---
 *Corresponding author
+footer_text: >-
+  © 2025 Yu Chai. All rights reserved.

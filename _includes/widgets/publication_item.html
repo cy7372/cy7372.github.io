@@ -35,7 +35,10 @@
 
     {% if role != "" %}
     <div class="mb-2">
-        <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.85rem; opacity: 0.9;">{{ role }}</span>
+        <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.85rem; opacity: 0.9;">
+            {% if role == "Corresponding Author" %}*{% endif %}
+            {{ role }}
+        </span>
     </div>
     {% endif %}
 
