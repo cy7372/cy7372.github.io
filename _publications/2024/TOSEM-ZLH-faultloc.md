@@ -3,7 +3,6 @@ title: "Context-based Transfer Learning for Structuring Fault Localization and P
 date: 2024-11-01
 selected: false
 pub: "ACM Transactions on Software Engineering and Methodology"
-pub_date: "2025"
 doi: "10.1145/3705302"
 abstract: 
 authors:

@@ -3,7 +3,6 @@ title: "DSM-Net: A Multi-scale Detection Network of Sonar Images for Deep-Sea Mi
 date: 2025-05-01
 selected: false
 pub: "Applied Ocean Research"
-pub_date: "2025"
 doi: "10.1016/j.apor.2025.104551"
 abstract: 
 authors:

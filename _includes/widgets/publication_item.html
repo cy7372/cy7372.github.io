@@ -3,7 +3,7 @@
 <div class="card shadow-sm mb-4 px-4 py-3 border-0" style="background: #fff;">
     <!-- 论文标题 -->
     <h5 class="font-weight-bold mt-1 mb-2" style="font-size: 1.2rem;">
-        {{ item.title }}
+        <a href="{{ item.url }}" class="text-dark">{{ item.title }}</a>
     </h5>
     <!-- 作者 -->
     <div class="mb-1" style="font-size: 1.01rem; color: #333;">
@@ -11,10 +11,7 @@
     </div>
     <!-- 期刊+年份+徽章 -->
     <div class="mb-2" style="color: #555; font-size: 0.97rem;">
-        <i>{{ item.pub }}</i>
-        {% if item.pub_date %}
-        <span style="margin-left:0.5em;">{{ item.pub_date }}</span>
-        {% endif %}
+        <i>{{ item.pub }}</i>, {{ item.date | date: "%b %d, %Y" }}
         
         {% if item.article_no %}
         <span style="margin-left:0.5em;">Art. no. {{ item.article_no }}</span>

@@ -4,6 +4,36 @@
 
 {%- for _key in authors -%}
     {%- assign name_str = _key -%}
+    {%- assign name_len = name_str | size -%}
+    {%- assign last_one_index = name_len | minus: 1 -%}
+    {%- assign last_two_index = name_len | minus: 2 -%}
+    {%- assign last_one = name_str | slice: last_one_index, 1 -%}
+    {%- assign last_two = name_str | slice: last_two_index, 2 -%}
+    
+    {%- if last_two == "‡*" or last_two == "*‡" -%}
+        {%- assign has_co_first = true -%}
+        {%- assign has_corresponding = true -%}
+    {%- elsif last_one == "‡" -%}
+        {%- assign has_co_first = true -%}
+    {%- elsif last_one == "*" -%}
+        {%- assign has_corresponding = true -%}
+    {%- endif -%}
+{%- endfor -%}
+
+{%- if has_co_first or has_corresponding %}
+<div class="mb-1 text-muted small" style="font-size: 0.9em;">
+    {%- if has_co_first -%}
+        &#8225; Co–first authors
+    {%- endif -%}
+    {%- if has_co_first and has_corresponding -%}, {% endif -%}
+    {%- if has_corresponding -%}
+        * Corresponding authors
+    {%- endif -%}
+</div>
+{%- endif -%}
+
+{%- for _key in authors -%}
+    {%- assign name_str = _key -%}
     {%- assign mark = "" -%}
     {%- assign name_len = name_str | size -%}
     {%- assign last_one_index = name_len | minus: 1 -%}
@@ -49,17 +79,3 @@
         </span>
     {%- endif -%}
 {%- endfor -%}
-
-{%- if has_co_first or has_corresponding %}
-<mark>
-(
-    {%- if has_co_first -%}
-        &#8225; Co–first authors
-    {%- endif -%}
-    {%- if has_co_first and has_corresponding -%}; {% endif -%}
-    {%- if has_corresponding -%}
-        * Corresponding authors
-    {%- endif -%}
-)
-</mark>
-{%- endif -%}
