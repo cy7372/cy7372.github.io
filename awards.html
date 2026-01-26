@@ -1,0 +1,134 @@
+---
+layout: default
+title: Awards
+navbar_title: Awards
+---
+
+<div class="row mt-4">
+    <div class="col-md-10 mx-auto">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="font-weight-bold mb-0">Honors & Awards</h2>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Sort awards">
+                <button type="button" class="btn btn-outline-secondary" id="sort-by-date" onclick="sortAwards('date')">
+                    <i class="fas fa-calendar-alt mr-1"></i> Date
+                </button>
+                <button type="button" class="btn btn-outline-secondary active" id="sort-by-rank" onclick="sortAwards('rank')">
+                    <i class="fas fa-medal mr-1"></i> Level
+                </button>
+            </div>
+        </div>
+        
+        <div id="awards-list">
+            {% assign awards = site.awards | sort: "date" | reverse %}
+            {% for award in awards %}
+            <div class="card shadow-sm mb-2 px-4 py-3 border-0 award-item" style="background: #fff;"
+                 data-rank="{{ award.rank | default: 99 }}" 
+                 data-date="{{ award.date | date: '%s' }}">
+                
+                <div class="d-flex justify-content-between align-items-start mt-1 mb-2">
+                    <h5 class="font-weight-bold mb-0" style="font-size: 1.2rem; flex: 1;">
+                        {% assign icon_class = "text-primary" %}
+                        {% assign icon_name = "fa-trophy" %}
+
+                        {% if award.level contains "First" %}
+                            {% assign icon_class = "text-gold" %}
+                            {% assign icon_name = "fa-medal" %}
+                        {% elsif award.level contains "Second" %}
+                            {% assign icon_class = "text-silver" %}
+                            {% assign icon_name = "fa-medal" %}
+                        {% elsif award.level contains "Third" %}
+                            {% assign icon_class = "text-bronze" %}
+                            {% assign icon_name = "fa-medal" %}
+                        {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
+                            {% assign icon_class = "text-scholarship" %}
+                            {% assign icon_name = "fa-graduation-cap" %}
+                        {% endif %}
+                        
+                        <i class="fas {{ icon_name }} mr-2 {{ icon_class }}"></i>
+                        <a href="{{ award.url | relative_url }}" class="text-dark">{{ award.title }}</a>
+                    </h5>
+                    <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 120px;">
+                        {{ award.date | date: "%Y" }}
+                    </div>
+                </div>
+
+                {% if award.level %}
+                <div class="mb-2 d-flex align-items-center flex-wrap">
+                    {% assign badge_class = "badge-primary" %}
+                    {% if award.level contains "First" %}
+                        {% assign badge_class = "badge-gold" %}
+                    {% elsif award.level contains "Second" %}
+                        {% assign badge_class = "badge-silver" %}
+                    {% elsif award.level contains "Third" %}
+                        {% assign badge_class = "badge-bronze" %}
+                    {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
+                        {% assign badge_class = "badge-scholarship" %}
+                    {% endif %}
+                    <span class="badge badge-pill {{ badge_class }} font-weight-normal" style="font-size: 0.85rem; opacity: 0.9;">{{ award.level }}</span>
+                </div>
+                {% endif %}
+
+                {% if award.awarding_body %}
+                    <div class="mb-1" style="font-size: 1.01rem; color: #555;">
+                        <i class="fas fa-university mr-2 text-muted small"></i>
+                        {{ award.awarding_body | split: ";" | first | strip }}
+                    </div>
+                {% endif %}
+
+                {% if award.content %}
+                    <div class="mt-2 text-dark small pl-3 border-left" style="opacity: 0.85; line-height: 1.5; border-color: #dee2e6 !important; border-width: 3px !important; font-style: italic; background-color: #f8f9fa; padding: 8px 12px; border-radius: 0 4px 4px 0;">
+                        {{ award.content | markdownify | remove: '<p>' | remove: '</p>' }}
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    sortAwards('rank');
+});
+
+function sortAwards(criteria) {
+    const list = document.getElementById('awards-list');
+    const items = Array.from(list.getElementsByClassName('award-item'));
+    const btnDate = document.getElementById('sort-by-date');
+    const btnRank = document.getElementById('sort-by-rank');
+
+    // Update buttons
+    if (criteria === 'date') {
+        btnDate.classList.add('active');
+        btnRank.classList.remove('active');
+    } else {
+        btnDate.classList.remove('active');
+        btnRank.classList.add('active');
+    }
+
+    items.sort((a, b) => {
+        if (criteria === 'date') {
+            // Sort by date descending
+            const dateDiff = b.dataset.date - a.dataset.date;
+            if (dateDiff !== 0) {
+                return dateDiff;
+            }
+            return parseInt(a.dataset.rank) - parseInt(b.dataset.rank);
+        } else {
+            // Sort by rank ascending (smaller rank is better)
+            // If ranks are equal, sort by date descending as secondary
+            const rankA = parseInt(a.dataset.rank);
+            const rankB = parseInt(b.dataset.rank);
+            if (rankA !== rankB) {
+                return rankA - rankB;
+            }
+            return b.dataset.date - a.dataset.date;
+        }
+    });
+
+    // Re-append items in sorted order
+    items.forEach(item => {
+        list.appendChild(item);
+    });
+}
+</script>

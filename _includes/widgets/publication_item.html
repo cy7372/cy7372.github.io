@@ -1,10 +1,15 @@
 {% assign item = include.item %}
 <!-- 外层卡片，阴影、留白、下间距，简洁美观 -->
-<div class="card shadow-sm mb-4 px-4 py-3 border-0" style="background: #fff;">
-    <!-- 论文标题 -->
-    <h5 class="font-weight-bold mt-1 mb-2" style="font-size: 1.2rem;">
-        <a href="{{ item.url }}" class="text-dark">{{ item.title }}</a>
-    </h5>
+<div class="card shadow-sm mb-2 px-4 py-3 border-0" style="background: #fff;">
+    <!-- 论文标题 + 日期 -->
+    <div class="d-flex justify-content-between align-items-start mt-1 mb-2">
+        <h5 class="font-weight-bold mb-0" style="font-size: 1.2rem; flex: 1;">
+            <a href="{{ item.url }}" class="text-dark">{{ item.title }}</a>
+        </h5>
+        <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 120px;">
+            {{ item.date | date: "%b %d, %Y" }}
+        </div>
+    </div>
     
     <!-- 自己的身份标签 -->
     {% assign my_name = site.data.profile.primary_name %}
@@ -33,12 +38,38 @@
         {% endif %}
     {% endfor %}
 
-    {% if role != "" %}
-    <div class="mb-2">
-        <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.85rem; opacity: 0.9;">
+    {% assign role_badge_class = "badge-role-other" %}
+    {% if role == "First Author" %}
+        {% assign role_badge_class = "badge-role-first" %}
+    {% elsif role == "Co-first Author" %}
+        {% assign role_badge_class = "badge-role-co" %}
+    {% elsif role == "Corresponding Author" %}
+        {% assign role_badge_class = "badge-role-corr" %}
+    {% elsif role == "Second Author" %}
+        {% assign role_badge_class = "badge-role-second" %}
+    {% endif %}
+
+    <!-- Metric Badges & Role Badge Row -->
+    {% assign has_metrics = false %}
+    {% if item.if or item.jcr %}{% assign has_metrics = true %}{% endif %}
+    
+    {% if role != "" or has_metrics %}
+    <div class="mb-2 d-flex align-items-center flex-wrap">
+        {% if role != "" %}
+        <span class="badge {{ role_badge_class }} font-weight-normal mr-2 mb-1" style="font-size: 0.85rem; opacity: 0.9;">
             {% if role == "Corresponding Author" %}*{% endif %}
             {{ role }}
         </span>
+        {% endif %}
+
+        {% assign if_float = item.if | plus: 0.0 %}
+        {% if item.if and if_float > 8.0 %}
+            <span class="badge badge-if mr-2 mb-1" style="font-size: 0.85rem;">IF: {{ item.if }}</span>
+        {% endif %}
+        
+        {% if item.jcr == "Q1" %}
+            <span class="badge badge-jcr mb-1" style="font-size: 0.85rem;">JCR {{ item.jcr }}</span>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -48,10 +79,10 @@
     </div>
     <!-- 期刊+年份+徽章 -->
     <div class="mb-2" style="color: #555; font-size: 0.97rem;">
-        <i>{{ item.pub }}</i>, {{ item.date | date: "%b %d, %Y" }}
+        <i>{{ item.pub }}</i>
         
-        {% if item.article_no %}
-        <span style="margin-left:0.5em;">Art. no. {{ item.article_no }}</span>
+        {% if item.vol_iss_page %}
+        <span style="margin-left:0.5em;">{{ item.vol_iss_page }}</span>
         {% endif %}
 
         {% if item.doi %}

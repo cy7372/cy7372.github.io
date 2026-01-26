@@ -3,7 +3,9 @@ title: "Real and Long-time Predicting the Trajectories of Internal Solitary Wave
 date: 2025-03-01
 selected: false
 pub: "Ocean Engineering"
-article_no: "120765"
+if: "5.5"
+jcr: "Q1"
+vol_iss_page: "120765"
 doi: "10.1016/j.oceaneng.2025.120765"
 abstract: 
 authors:

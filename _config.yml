@@ -41,8 +41,15 @@ collections:
     output: true
   showcase:
     output: true
+  awards:
+    output: true
 
 defaults:
+  - scope:
+      path: ""
+      type: "awards"
+    values:
+      layout: "award"
   - scope:
       path: ""
       type: "publications"

@@ -26,22 +26,22 @@ orcid: 0009-0004-3106-0134
 
 short_bio_text_justify: false
 short_bio: >-
+short_bio: >-
   <p>
-    My research currently focuses on AI for Science, specifically within the marine domain. My work involves applications such as marine remote sensing, meteorological forecasting, and underwater robotics. 
+    My research focuses on AI for Science in marine and atmospheric (MetOcean) applications, including marine remote sensing, meteorological forecasting and underwater robotics. I aim to use AI methods to address real-world problems and operational needs in these domains, rather than just improving benchmarks. Beyond MetOcean, I am also interested in applying AI to other domain-specific problems, such as materials modeling and EDA.
   </p>
 
   <p>
-    I specialize in data-driven deep learning methods for industry-specific scenarios. I address challenges like data scarcity and annotation noise through expertise in multimodal perception modeling, automated data-construction pipelines, transfer learning, and data synthesis. This has resulted in the development of multiple deployable, task-specific models.
+    On the technical side, I focus on transfer learning and other data-efficient deep learning techniques, as MetOcean data are often scarce, imbalanced or noisy. I also work on AI agents and spatiotemporal forecasting models for weather and maritime service applications.
   </p>
 
   <p>
-    Prior to my postgraduate studies, I conducted research on deep learning for code analysis and intelligence at the Trusted Software and Intelligent Computing Lab.
+    Before my postgraduate studies, I worked on AI for coding, exploring cross-lingual and cross-task transfer learning to improve model generalization with limited labeled data.
   </p>
 
   <p>
-    For inquiries regarding my work, please feel free to reach out.
+    If you are interested in my work or potential collaboration, please feel free to get in touch.
   </p>
-
 
 
 portrait_url: /assets/images/photos/cy.png
@@ -72,7 +72,7 @@ experience:
 
 
 - name: Shanghai Meteorological Service Center
-  logo: /assets/images/badges/SMS_logo.jpg
+  logo: /assets/images/badges/SMS_logo.png
   position: Intern
   date: Jul. 2025 - Aug. 2025
 
@@ -90,18 +90,6 @@ experience:
 
   
 
-awards:
-  - name: "National Undergraduate Electronics Design Contest (TI) – First Prize"
-    date: 2021
-  - name: "National Robot Development Competition (RoboCom) – First Prize"
-    date: 2023
-  - name: "China Undergraduate Physics Experiment Competition – Second Prize"
-    date: 2020
-  - name: "National College Student Smart Car Competition (NXP) – Second Prize"
-    date: 2021
-  - name: "National Robot Development Competition (RoboCom) – Second Prize"
-    date: 2022
-  # - name: "National Digital Media Design Competition – Second Prize"
-  #   date: 2023
+
 
 

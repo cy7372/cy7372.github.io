@@ -16,20 +16,20 @@ layout: default
             {% if clean_name == my_name %}
                 {% if forloop.first %}
                     {% assign role = "First Author" %}
-                    {% assign badge_class = "badge-primary" %}
+                    {% assign badge_class = "badge-role-first" %}
                 {% elsif author contains "‡" %}
                     {% assign role = "Co-first Author" %}
-                    {% assign badge_class = "badge-primary" %}
+                    {% assign badge_class = "badge-role-co" %}
                 {% elsif author contains "*" %}
                     {% assign role = "Corresponding Author" %}
-                    {% assign badge_class = "badge-warning" %}
+                    {% assign badge_class = "badge-role-corr" %}
                 {% else %}
                     {% if forloop.index == 2 %}
                          {% assign role = "Second Author" %}
-                         {% assign badge_class = "badge-info" %}
+                         {% assign badge_class = "badge-role-second" %}
                     {% else %}
                          {% assign role = "Co-Author" %}
-                         {% assign badge_class = "badge-secondary" %}
+                         {% assign badge_class = "badge-role-other" %}
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -51,26 +51,37 @@ layout: default
         <!-- Publication Metadata -->
         <div class="mb-4 p-3 bg-light rounded border-left border-primary" style="border-left-width: 4px !important;">
             <div class="row mb-2">
-                <div class="col-md-3 font-weight-bold text-muted">Published in:</div>
-                <div class="col-md-9 font-italic text-dark">{{ page.pub }}</div>
+                <div class="col-md-4 font-weight-bold text-muted">Published in:</div>
+                <div class="col-md-8 font-italic text-dark">
+                    {{ page.pub }}
+                    
+                    {% assign if_float = page.if | plus: 0.0 %}
+                    {% if page.if and if_float > 8.0 %}
+                        <span class="badge badge-if ml-2" style="font-size: 0.85rem;">IF: {{ page.if }}</span>
+                    {% endif %}
+                    
+                    {% if page.jcr == "Q1" %}
+                        <span class="badge badge-jcr ml-1" style="font-size: 0.85rem;">JCR {{ page.jcr }}</span>
+                    {% endif %}
+                </div>
             </div>
             
             <div class="row mb-2">
-                <div class="col-md-3 font-weight-bold text-muted">Date of Publication:</div>
-                <div class="col-md-9">{{ page.date | date: "%d %B %Y" }}</div>
+                <div class="col-md-4 font-weight-bold text-muted">Date of Publication:</div>
+                <div class="col-md-8">{{ page.date | date: "%d %B %Y" }}</div>
             </div>
 
-            {% if page.article_no %}
+            {% if page.vol_iss_page %}
             <div class="row mb-2">
-                <div class="col-md-3 font-weight-bold text-muted">Article No.:</div>
-                <div class="col-md-9">{{ page.article_no }}</div>
+                <div class="col-md-4 font-weight-bold text-muted">Art. No. / Vol., pp.:</div>
+                <div class="col-md-8">{{ page.vol_iss_page }}</div>
             </div>
             {% endif %}
 
             {% if page.doi %}
             <div class="row mb-2">
-                <div class="col-md-3 font-weight-bold text-muted">DOI:</div>
-                <div class="col-md-9">
+                <div class="col-md-4 font-weight-bold text-muted">DOI:</div>
+                <div class="col-md-8">
                     <a href="https://doi.org/{{ page.doi }}" target="_blank" class="text-primary">{{ page.doi }}</a>
                 </div>
             </div>
@@ -105,7 +116,7 @@ layout: default
         </div>
         
         <div class="mt-5 mb-4 text-center">
-            <a href="{{ '/' | relative_url }}" class="btn btn-link text-muted"><i class="fas fa-arrow-left mr-1"></i> Back to Home</a>
+            <a href="{{ '/publications' | relative_url }}" class="btn btn-link text-muted"><i class="fas fa-arrow-left mr-1"></i> Back to Publications</a>
         </div>
     </div>
 </div>

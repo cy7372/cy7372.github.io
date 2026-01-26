@@ -67,3 +67,95 @@ div.lazy {
     font-family: Courier, monospace;
 }
 
+/* ------------------------------------------------------------------ */
+/* Unified Badge System for Publications, News, and Awards */
+/* ------------------------------------------------------------------ */
+
+/* 1. Paper Metrics (IF & JCR) - Clean Outline Style */
+.badge-if,
+.badge-jcr {
+    color: #555; /* Default Dark Grey Text */
+    background-color: transparent;
+    border: 1px solid;
+    font-weight: 500;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+}
+
+.badge-if {
+    color: #0d6efd; /* Bootstrap Primary Blue */
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05); /* Very faint blue tint */
+}
+
+.badge-jcr {
+    color: #198754; /* Bootstrap Success Green */
+    border-color: #198754;
+    background-color: rgba(25, 135, 84, 0.05); /* Very faint green tint */
+}
+
+/* 2. Role Badges - Clean, Text-based Look */
+.badge-role-first,
+.badge-role-corr,
+.badge-role-co,
+.badge-role-other {
+    background-color: transparent;
+    border: 1px solid;
+    font-weight: 500;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+}
+
+.badge-role-first {
+    color: #0c5460;
+    border-color: #bee5eb;
+    background-color: rgba(190, 229, 235, 0.2); /* Very faint background */
+}
+
+.badge-role-corr {
+    color: #856404;
+    border-color: #ffc107; /* Darker border (Bootstrap warning color) */
+    background-color: rgba(255, 238, 186, 0.2);
+}
+
+.badge-role-co {
+    color: #495057;
+    border-color: #dee2e6;
+    background-color: rgba(222, 226, 230, 0.2);
+}
+
+.badge-role-second {
+    color: #495057; /* Dark Grey */
+    border-color: #aeb5bc; /* Distinct Grey Border */
+    background-color: rgba(206, 212, 218, 0.25); /* Slightly darker background than 'other' */
+}
+
+.badge-role-other {
+    color: #6c757d; /* Muted Grey */
+    border-color: #dee2e6; /* Light Border */
+    background-color: transparent;
+}
+
+/* 3. Award Level Badges - Metallic Tones */
+.badge-gold {
+    background-color: #e0ac00; /* Deep Gold */
+    color: #fff;
+}
+.badge-silver {
+    background-color: #adb5bd; /* Silver Grey */
+    color: #fff;
+}
+.badge-bronze {
+    background-color: #cd7f32; /* Bronze */
+    color: #fff;
+}
+.badge-scholarship {
+    background-color: #6f42c1; /* Purple */
+    color: #fff;
+}
+
+/* 4. Icon Colors (Matching Award Badges) */
+.text-gold { color: #e0ac00 !important; }
+.text-silver { color: #adb5bd !important; }
+.text-bronze { color: #cd7f32 !important; }
+.text-scholarship { color: #6f42c1 !important; }

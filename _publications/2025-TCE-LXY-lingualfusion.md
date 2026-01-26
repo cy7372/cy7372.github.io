@@ -3,7 +3,10 @@ title: "Lingual-Fusion Adapter-Based Transfer Learning for Low-Resource Code Vul
 date: 2025-01-28
 selected: true
 pub: "IEEE Transactions on Consumer Electronics"
+if: "10.9"
+jcr: "Q1"
 doi: "10.1109/tce.2025.3535638"
+vol_iss_page: "71(1):1008–1023"
 abstract: 
 authors:
   - "Xinyue Long"

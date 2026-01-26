@@ -1,0 +1,40 @@
+---
+layout: default
+---
+<div class="row mt-5">
+    <div class="col-md-10 mx-auto">
+        <h2 class="mb-3 font-weight-bold">{{ page.title }}</h2>
+        
+        <div class="mb-4 p-3 bg-white shadow-sm rounded border-left border-warning" style="border-left-width: 4px !important;">
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Date:</div>
+                <div class="col-md-9">{{ page.date | date: "%B %d, %Y" }}</div>
+            </div>
+
+            {% if page.awarding_body %}
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Awarding Body:</div>
+                <div class="col-md-9 text-dark">{{ page.awarding_body }}</div>
+            </div>
+            {% endif %}
+
+            {% if page.location %}
+            <div class="row mb-2">
+                <div class="col-md-3 font-weight-bold text-muted">Region:</div>
+                <div class="col-md-9">{{ page.location }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="content text-justify">
+            <h5 class="mb-3 font-weight-bold">Means of Attainment</h5>
+            <div style="font-size: 1.1rem; line-height: 1.6;">
+                {{ content }}
+            </div>
+        </div>
+        
+        <div class="mt-5 mb-4 text-center">
+            <a href="{{ '/awards' | relative_url }}" class="btn btn-link text-muted"><i class="fas fa-arrow-left mr-1"></i> Back to Awards</a>
+        </div>
+    </div>
+</div>

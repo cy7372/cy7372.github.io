@@ -1,4 +1,4 @@
-{% assign all_news = site.news | concat: site.publications | sort: "date" | reverse | slice: 0, include.limit %}
+{% assign all_news = site.news | concat: site.publications | concat: site.awards | sort: "date" | reverse | slice: 0, include.limit %}
 {% assign news_by_year = all_news | group_by_exp: "item", "item.date | date: '%Y'" -%}
 
 <div class="my-3 bg-white shadow-sm rounded-sm">
@@ -14,15 +14,71 @@
                     <div>
                         {% if item.collection == 'publications' or item.pub %}
                              <div class="d-flex align-items-baseline">
-                                 <i class="far fa-file-alt text-muted mr-2" style="font-size: 0.9em; position: relative; top: 1px;"></i>
-                                 <div>
+                                 <div style="width: 24px; text-align: center;" class="mr-2">
+                                    <i class="far fa-file-alt text-muted" style="font-size: 0.9em;"></i>
+                                 </div>
+                                 <div style="flex: 1;">
                                      <span style="font-size: 0.85em;" class="text-uppercase text-secondary font-weight-bold mr-1">Paper</span>
                                      <b style="font-size: 1.05em;"><a href="{{ item.url }}" class="text-dark">{{ item.title }}</a></b>
+                                     
+                                     <!-- Role Badge -->
+                                     {% assign my_name = site.data.profile.primary_name %}
+                                     {% assign role = "" %}
+                                     {% assign role_badge_class = "badge-secondary" %}
+                                     
+                                     {% for author in item.authors %}
+                                         {% assign clean_name = author | remove: "*" | remove: "‡" %}
+                                         {% if clean_name == my_name %}
+                                             {% if forloop.first %}
+                                                 {% assign role = "First Author" %}
+                                                 {% assign role_badge_class = "badge-role-first" %}
+                                             {% elsif author contains "‡" %}
+                                                 {% assign role = "Co-first Author" %}
+                                                 {% assign role_badge_class = "badge-role-co" %}
+                                             {% elsif author contains "*" %}
+                                                 {% assign role = "Corresponding Author" %}
+                                                 {% assign role_badge_class = "badge-role-corr" %}
+                                             {% else %}
+                                                 {% if forloop.index == 2 %}
+                                                     {% assign role = "Second Author" %}
+                                                     {% assign role_badge_class = "badge-role-second" %}
+                                                 {% endif %}
+                                             {% endif %}
+                                         {% endif %}
+                                     {% endfor %}
+
+                                     {% if role != "" %}
+                                         <span class="badge {{ role_badge_class }} ml-1 align-text-bottom" style="font-size: 0.7em;">{{ role }}</span>
+                                     {% endif %}
+
                                      {% if item.pub %}
                                         <div class="text-muted small mt-1">
                                             <i class="fas fa-arrow-right text-muted mr-1" style="font-size: 0.7em;"></i>
                                             Published in <span class="font-weight-bold font-italic">{{ item.pub }}</span>
                                         </div>
+                                     {% endif %}
+                                 </div>
+                             </div>
+                        {% elsif item.collection == 'awards' %}
+                             <div class="d-flex align-items-baseline">
+                                 <div style="width: 24px; text-align: center;" class="mr-2">
+                                     <i class="fas fa-trophy text-muted" style="font-size: 0.9em;"></i>
+                                 </div>
+                                 <div style="flex: 1;">
+                                     <span style="font-size: 0.85em;" class="text-uppercase text-secondary font-weight-bold mr-1">Award</span>
+                                     <b style="font-size: 1.05em;"><a href="{{ item.url | relative_url }}" class="text-dark">{{ item.title }}</a></b>
+                                     {% if item.level %}
+                                        {% assign badge_class = "badge-light border text-muted" %}
+                                        {% if item.level contains "First" %}
+                                            {% assign badge_class = "badge-gold" %}
+                                        {% elsif item.level contains "Second" %}
+                                            {% assign badge_class = "badge-silver" %}
+                                        {% elsif item.level contains "Third" %}
+                                            {% assign badge_class = "badge-bronze" %}
+                                        {% elsif item.level == "Undergraduate" or item.level == "Postgraduate" %}
+                                            {% assign badge_class = "badge-scholarship" %}
+                                        {% endif %}
+                                        <span class="badge badge-pill {{ badge_class }} ml-1 align-text-bottom" style="font-size: 0.7em;">{{ item.level }}</span>
                                      {% endif %}
                                  </div>
                              </div>

@@ -2,37 +2,105 @@
 layout: default
 title : Publications
 navbar_title: Publications
-body_attr: >-
-  data-spy="scroll" data-target="#navbar-year" data-offset="100"
 ---
 
-{% assign pubs_by_year = site.publications | sort: "date" | reverse | group_by_exp: "item", "item.date | date: '%Y'" %}
-
-<div class="row">
-    <div class="col-12 col-lg-10">
-        <!-- Legend -->
-        <div class="mb-2 text-right text-muted small">
-            <span class="mr-3"><i class="fas fa-asterisk fa-xs mr-1"></i>Corresponding Author</span>
-            <span><i class="fas fa-equals fa-xs mr-1" style="transform: rotate(90deg);"></i>Co-first Author</span>
+<div class="row mt-4">
+    <div class="col-md-10 mx-auto">
+        <!-- Header & Sort Buttons -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex align-items-baseline">
+                <h2 class="font-weight-bold mb-0 mr-3">Publications</h2>
+                <div class="text-muted small">
+                    <span class="mr-3"><i class="fas fa-asterisk fa-xs mr-1"></i>Corresponding Author</span>
+                    <span><i class="fas fa-equals fa-xs mr-1" style="transform: rotate(90deg);"></i>Co-first Author</span>
+                </div>
+            </div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Sort publications">
+                <button type="button" class="btn btn-outline-secondary" id="sort-by-date" onclick="sortPubs('date')">
+                    <i class="fas fa-calendar-alt mr-1"></i> Date
+                </button>
+                <button type="button" class="btn btn-outline-secondary active" id="sort-by-type" onclick="sortPubs('type')">
+                    <i class="fas fa-user-tag mr-1"></i> Role
+                </button>
+            </div>
         </div>
 
-        {% for year in pubs_by_year %}
-        {% assign num_papers = year.items | size %}
-        <h2 class="pt-4" id="year-{{ year.name }}">{{ year.name }}</h2>
-        <div class="my-0 p-0 bg-white shadow-sm rounded-sm">
-            {% for item in year.items %}
-                {% include widgets/publication_item.html item=item hide_bottom_border=forloop.last first=forloop.first last=forloop.last %}
+        <!-- Publication List -->
+        <div id="pubs-list">
+            {% assign pubs = site.publications | sort: "date" | reverse %}
+            {% assign my_name = site.data.profile.primary_name %}
+            
+            {% for item in pubs %}
+                {% assign role_score = 99 %}
+                {% for author in item.authors %}
+                    {% assign clean_name = author | remove: "*" | remove: "‡" %}
+                    {% if clean_name == my_name %}
+                        {% if forloop.first %}
+                            {% assign role_score = 1 %} <!-- First Author -->
+                        {% elsif author contains "‡" %}
+                             {% assign role_score = 2 %} <!-- Co-first Author -->
+                        {% elsif author contains "*" %}
+                             {% assign role_score = 3 %} <!-- Corresponding Author -->
+                        {% elsif forloop.index == 2 %}
+                             {% assign role_score = 4 %} <!-- Second Author -->
+                        {% else %}
+                             {% assign role_score = 5 %} <!-- Co-Author -->
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            
+            <div class="pub-item" data-date="{{ item.date | date: '%s' }}" data-title="{{ item.title | downcase }}" data-role="{{ role_score }}">
+                {% include widgets/publication_item.html item=item %}
+            </div>
             {% endfor %}
         </div>
-        {% endfor %}
     </div>
-
-    <div class="col-2 d-none d-lg-block">
-        <div id="navbar-year" class="nav nav-pills flex-column sticky-top" style="top: 80px">
-            {% for year in pubs_by_year %}
-            <a class="nav-link d-block" href="#year-{{ year.name }}">{{ year.name }}</a>
-            {% endfor %}
-        </div>
-    </div>
-
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    sortPubs('type');
+});
+
+function sortPubs(criteria) {
+    const list = document.getElementById('pubs-list');
+    const items = Array.from(list.getElementsByClassName('pub-item'));
+    const btnDate = document.getElementById('sort-by-date');
+    const btnType = document.getElementById('sort-by-type');
+
+    // Update buttons
+    if (criteria === 'date') {
+        btnDate.classList.add('active');
+        btnType.classList.remove('active');
+    } else {
+        btnDate.classList.remove('active');
+        btnType.classList.add('active');
+    }
+
+    items.sort((a, b) => {
+        if (criteria === 'date') {
+            // Sort by date descending
+            const dateDiff = b.dataset.date - a.dataset.date;
+            if (dateDiff !== 0) {
+                return dateDiff;
+            }
+            return parseInt(a.dataset.role) - parseInt(b.dataset.role);
+        } else {
+            // Sort by role score ascending (smaller score is more important)
+            const roleA = parseInt(a.dataset.role);
+            const roleB = parseInt(b.dataset.role);
+            
+            if (roleA !== roleB) {
+                return roleA - roleB;
+            }
+            // Secondary sort by date descending
+            return b.dataset.date - a.dataset.date;
+        }
+    });
+
+    // Re-append items in sorted order
+    items.forEach(item => {
+        list.appendChild(item);
+    });
+}
+</script>

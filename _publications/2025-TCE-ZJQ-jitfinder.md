@@ -3,6 +3,8 @@ title: "Identifying Root Cause of Bugs by Capturing Changed Code Lines With Rela
 date: 2025-10-07
 selected: false
 pub: "IEEE Transactions on Consumer Electronics"
+if: "10.9"
+jcr: "Q1"
 doi: "10.1109/TCE.2025.3614479"
 abstract: 
 authors:
