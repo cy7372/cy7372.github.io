@@ -35,14 +35,23 @@ layout: default
             {% endif %}
         {% endfor %}
 
-        {% if role != "" %}
-        <div class="mb-3">
-            <span class="badge {{ badge_class }} font-weight-normal" style="font-size: 0.9rem; padding: 0.4em 0.8em;">
+        <div class="mb-3 d-flex align-items-center flex-wrap">
+            {% if role != "" %}
+            <span class="badge {{ badge_class }} font-weight-normal mr-2 mb-1" style="font-size: 0.9rem; padding: 0.4em 0.8em;">
                 {% if role == "Corresponding Author" %}*{% endif %}
                 {{ role }}
             </span>
+            {% endif %}
+            
+            {% assign if_float = page.if | plus: 0.0 %}
+            {% if page.if and if_float > 8.0 %}
+                <span class="badge badge-if mr-2 mb-1" style="font-size: 0.9rem; padding: 0.4em 0.8em;">IF: {{ page.if }}</span>
+            {% endif %}
+            
+            {% if page.jcr == "Q1" %}
+                <span class="badge badge-jcr mr-2 mb-1" style="font-size: 0.9rem; padding: 0.4em 0.8em;">JCR {{ page.jcr }}</span>
+            {% endif %}
         </div>
-        {% endif %}
 
         <div class="mb-4 text-muted">
             {% include widgets/author_list.html authors=page.authors %}
@@ -54,15 +63,6 @@ layout: default
                 <div class="col-md-4 font-weight-bold text-muted">Published in:</div>
                 <div class="col-md-8 font-italic text-dark">
                     {{ page.pub }}
-                    
-                    {% assign if_float = page.if | plus: 0.0 %}
-                    {% if page.if and if_float > 8.0 %}
-                        <span class="badge badge-if ml-2" style="font-size: 0.85rem;">IF: {{ page.if }}</span>
-                    {% endif %}
-                    
-                    {% if page.jcr == "Q1" %}
-                        <span class="badge badge-jcr ml-1" style="font-size: 0.85rem;">JCR {{ page.jcr }}</span>
-                    {% endif %}
                 </div>
             </div>
             

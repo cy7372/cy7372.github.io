@@ -142,7 +142,7 @@ div.lazy {
     color: #fff;
 }
 .badge-silver {
-    background-color: #adb5bd; /* Silver Grey */
+    background-color: #757575; /* Darker grey */
     color: #fff;
 }
 .badge-bronze {
@@ -156,6 +156,6 @@ div.lazy {
 
 /* 4. Icon Colors (Matching Award Badges) */
 .text-gold { color: #e0ac00 !important; }
-.text-silver { color: #adb5bd !important; }
+.text-silver { color: #9e9e9e !important; }
 .text-bronze { color: #cd7f32 !important; }
 .text-scholarship { color: #6f42c1 !important; }
