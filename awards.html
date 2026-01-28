@@ -48,7 +48,7 @@ navbar_title: Awards
                         <a href="{{ award.url | relative_url }}" class="text-dark">{{ award.title }}</a>
                     </h5>
                     <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 120px;">
-                        {{ award.date | date: "%Y" }}
+                        {{ award.date | date: "%b %Y" }}
                     </div>
                 </div>
 
