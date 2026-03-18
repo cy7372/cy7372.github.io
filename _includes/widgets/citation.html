@@ -1,0 +1,84 @@
+<!-- Citation Modal -->
+<div class="modal fade" id="modal-citation-{{ include.id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-quote-left mr-2"></i>Cite this publication</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Citation Format Tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#bibtex-{{ include.id }}" role="tab">
+                            <i class="fas fa-code mr-1"></i>BibTeX
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#apa-{{ include.id }}" role="tab">
+                            APA
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#gbt-{{ include.id }}" role="tab">
+                            GB/T 7714
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#mla-{{ include.id }}" role="tab">
+                            MLA
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content mt-3">
+                    <!-- BibTeX -->
+                    <div class="tab-pane fade show active" id="bibtex-{{ include.id }}" role="tab">
+                        <div class="position-relative">
+                            <pre class="bg-light p-3 rounded border" style="max-height: 300px; overflow-y: auto; font-size: 0.85rem;"><code id="bibtex-content-{{ include.id }}">{{ include.bibtex }}</code></pre>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('bibtex-content-{{ include.id }}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- APA -->
+                    <div class="tab-pane fade" id="apa-{{ include.id }}" role="tab">
+                        <div class="position-relative">
+                            <p class="bg-light p-3 rounded border" id="apa-content-{{ include.id }}">{{ include.apa }}</p>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('apa-content-{{ include.id }}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- GB/T 7714 -->
+                    <div class="tab-pane fade" id="gbt-{{ include.id }}" role="tab">
+                        <div class="position-relative">
+                            <p class="bg-light p-3 rounded border" id="gbt-content-{{ include.id }}">{{ include.gbt }}</p>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('gbt-content-{{ include.id }}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MLA -->
+                    <div class="tab-pane fade" id="mla-{{ include.id }}" role="tab">
+                        <div class="position-relative">
+                            <p class="bg-light p-3 rounded border" id="mla-content-{{ include.id }}">{{ include.mla }}</p>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('mla-content-{{ include.id }}')">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

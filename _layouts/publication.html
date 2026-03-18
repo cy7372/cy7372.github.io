@@ -106,8 +106,16 @@ layout: default
                     {{ link[0] }}
                 </a>
             {% endfor %}
+
+            <!-- Citation Button -->
+            <button class="btn btn-outline-secondary btn-sm mr-2 mb-2" data-toggle="modal" data-target="#modal-citation-{{ page.doi | default: page.title | slugify | replace: '-', '' }}">
+                <i class="fas fa-quote-left mr-1"></i>Cite
+            </button>
         </div>
         {% endif %}
+
+        <!-- Citation Modal -->
+        {% include widgets/citation_generator.html item=page %}
 
         <hr>
 

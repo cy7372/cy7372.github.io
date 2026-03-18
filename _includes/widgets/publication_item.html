@@ -105,6 +105,11 @@
         {% for link in item.links %}
             <a href="{{ link[1] }}" target="_blank" style="margin-right:0.6em;">[{{ link[0] }}]</a>
         {% endfor %}
+
+        <!-- Citation Link -->
+        <a href="{{ item.url }}" style="margin-left:0.6em;" class="text-muted" title="View citation">
+            <i class="fas fa-quote-left"></i>
+        </a>
     </div>
     {% endif %}
 </div>
