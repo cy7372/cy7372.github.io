@@ -50,9 +50,9 @@ portrait_url: /assets/images/photos/avatar.png
   # Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
 
 experience:
-- name: Huawei
+- name: Huawei Technologies Co., Ltd
   logo: /assets/images/badges/Huawei_logo.png
-  position: ""
+  position: AI Algorithm Engineer
   date: May 2026 - present
 
 - name: Eastern Institute for Advanced Study
