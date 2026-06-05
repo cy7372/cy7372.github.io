@@ -16,7 +16,10 @@ navbar_title: Publications
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <div class="btn-group btn-group-sm mr-2" role="group" aria-label="Sort publications">
+                <button type="button" class="btn btn-outline-primary btn-sm mr-2" data-toggle="modal" data-target="#modal-cite-all">
+                    <i class="fas fa-quote-left mr-1"></i> Cite All
+                </button>
+                <div class="btn-group btn-group-sm" role="group" aria-label="Sort publications">
                     <button type="button" class="btn btn-outline-secondary active" id="sort-by-date" onclick="sortPubs('date')">
                         <i class="fas fa-calendar-alt mr-1"></i> Date
                     </button>
@@ -24,9 +27,6 @@ navbar_title: Publications
                         <i class="fas fa-user-tag mr-1"></i> Role
                     </button>
                 </div>
-                <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modal-cite-all">
-                    <i class="fas fa-quote-left mr-1"></i> Cite All
-                </button>
             </div>
         </div>
 
