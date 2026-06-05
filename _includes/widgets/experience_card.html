@@ -4,145 +4,51 @@
             <div class="card-body p-5">
                 <h4 class="font-weight-bold mb-4">Experience</h4>
 
-                <div id="timeline-gantt"></div>
-
-                <script>
-                (function() {
-                    var entries = [];
+                <div class="row">
                     {% if site.data.profile.education %}
-                    {% for item in site.data.profile.education %}
-                    entries.push({
-                        name: {{ item.name | jsonify }},
-                        logo: {{ item.logo | relative_url | jsonify }},
-                        position: {{ item.position | jsonify }},
-                        date: {{ item.date | jsonify }},
-                        type: 'edu'
-                    });
-                    {% endfor %}
+                    <div class="col-md-6">
+                        <h6 class="text-muted font-weight-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;">Education</h6>
+                        <div class="timeline-v">
+                            {% for item in site.data.profile.education %}
+                            <div class="tl-item">
+                                <div class="tl-marker tl-edu">
+                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" class="tl-logo">
+                                </div>
+                                <div class="tl-body">
+                                    <div class="tl-name">{{ item.name }}</div>
+                                    {% if item.position and item.position != "" %}
+                                    <div class="tl-pos">{{ item.position }}</div>
+                                    {% endif %}
+                                    <div class="tl-date">{{ item.date }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                     {% endif %}
 
                     {% if site.data.profile.experience %}
-                    {% for item in site.data.profile.experience %}
-                    entries.push({
-                        name: {{ item.name | jsonify }},
-                        logo: {{ item.logo | relative_url | jsonify }},
-                        position: {{ item.position | jsonify }},
-                        date: {{ item.date | jsonify }},
-                        type: 'work'
-                    });
-                    {% endfor %}
+                    <div class="col-md-6">
+                        <h6 class="text-muted font-weight-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;">Work</h6>
+                        <div class="timeline-v">
+                            {% for item in site.data.profile.experience %}
+                            <div class="tl-item">
+                                <div class="tl-marker tl-work">
+                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" class="tl-logo">
+                                </div>
+                                <div class="tl-body">
+                                    <div class="tl-name">{{ item.name }}</div>
+                                    {% if item.position and item.position != "" %}
+                                    <div class="tl-pos">{{ item.position }}</div>
+                                    {% endif %}
+                                    <div class="tl-date">{{ item.date }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                     {% endif %}
-
-                    function parseRange(d) {
-                        var m = d.match(/(\w+)\.?\s*(\d{4})\s*[-–—to]+\s*(\w+)\.?\s*(\d{4})/i);
-                        if (!m) m = d.match(/(\w+)\.?\s*(\d{4})/);
-                        if (!m) return {s:{y:2019,m:1}, e:{y:2026,m:12}};
-                        var sm = {'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12};
-                        var smkey = (m[1]||'jan').toLowerCase().substring(0,3);
-                        var sy = parseInt(m[2]);
-                        var emkey = (m[3]||'dec').toLowerCase().substring(0,3);
-                        var ey = parseInt(m[4]||m[2]);
-                        return {
-                            s: {y: sy, m: sm[smkey] || 6},
-                            e: {y: ey, m: sm[emkey] || 6}
-                        };
-                    }
-
-                    // Parse all entries
-                    for (var i = 0; i < entries.length; i++) {
-                        var r = parseRange(entries[i].date);
-                        entries[i].sy = r.s.y;
-                        entries[i].sm = r.s.m;
-                        entries[i].ey = r.e.y;
-                        entries[i].em = r.e.m;
-                        // Convert to fractional year for easier math
-                        entries[i].start = r.s.y + r.s.m/12;
-                        entries[i].end = r.e.y + r.e.m/12;
-                    }
-
-                    // Find time range
-                    var minStart = 2026, maxEnd = 2019;
-                    for (var i = 0; i < entries.length; i++) {
-                        if (entries[i].start < minStart) minStart = entries[i].start;
-                        if (entries[i].end > maxEnd) maxEnd = entries[i].end;
-                    }
-                    minStart = Math.floor(minStart);
-                    maxEnd = Math.ceil(maxEnd);
-                    var totalSpan = maxEnd - minStart;
-
-                    // Greedy lane assignment
-                    var lanes = [];
-                    entries.sort(function(a,b) { return a.start - b.start; });
-                    for (var i = 0; i < entries.length; i++) {
-                        var assigned = -1;
-                        for (var l = 0; l < 20; l++) {
-                            var conflict = false;
-                            for (var j = 0; j < i; j++) {
-                                if (entries[j].lane === l) {
-                                    if (!(entries[i].start >= entries[j].end || entries[i].end <= entries[j].start)) {
-                                        conflict = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!conflict) { assigned = l; break; }
-                        }
-                        entries[i].lane = assigned >= 0 ? assigned : 0;
-                    }
-
-                    // Build HTML
-                    var html = '<div class="tg-wrap">';
-
-                    // Year header row
-                    html += '<div class="tg-header">';
-                    html += '<div class="tg-label-col"></div>';
-                    for (var y = minStart; y <= maxEnd; y++) {
-                        html += '<div class="tg-year">' + y + '</div>';
-                    }
-                    html += '</div>';
-
-                    // One row per lane
-                    var maxLane = 0;
-                    for (var i = 0; i < entries.length; i++) {
-                        if (entries[i].lane > maxLane) maxLane = entries[i].lane;
-                    }
-
-                    for (var l = 0; l <= maxLane; l++) {
-                        html += '<div class="tg-row">';
-                        html += '<div class="tg-label-col"></div>';
-                        for (var y = minStart; y <= maxEnd; y++) {
-                            html += '<div class="tg-cell"></div>';
-                        }
-                        html += '</div>';
-                    }
-
-                    // Overlay bars
-                    var barHtml = '';
-                    for (var i = 0; i < entries.length; i++) {
-                        var e = entries[i];
-                        var left = ((e.start - minStart) / totalSpan) * 100;
-                        var width = Math.max(((e.end - e.start) / totalSpan) * 100, 4);
-                        var topPct = e.lane * 48; // px per lane
-                        var cls = e.type === 'edu' ? 'tg-bar-edu' : 'tg-bar-work';
-
-                        barHtml += '<div class="tg-bar ' + cls + '" style="left:' + left + '%;width:' + width + '%;top:' + (topPct + 4) + 'px;">';
-                        barHtml += '<div class="tg-bar-inner">';
-                        if (e.logo) barHtml += '<img src="' + e.logo + '" class="tg-bar-logo">';
-                        barHtml += '<div class="tg-bar-text">';
-                        barHtml += '<span class="tg-bar-name">' + e.name + '</span>';
-                        if (e.position) barHtml += '<span class="tg-bar-pos">' + e.position.replace(/<br\/>/g, ' · ') + '</span>';
-                        barHtml += '</div>';
-                        barHtml += '<span class="tg-bar-date">' + e.date + '</span>';
-                        barHtml += '</div>';
-                        barHtml += '</div>';
-                    }
-
-                    html += '<div class="tg-bars" style="height:' + ((maxLane + 1) * 48) + 'px;">' + barHtml + '</div>';
-                    html += '</div>';
-
-                    document.getElementById('timeline-gantt').innerHTML = html;
-                })();
-                </script>
+                </div>
             </div>
         </div>
     </div>
