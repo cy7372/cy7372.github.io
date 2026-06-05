@@ -100,16 +100,21 @@
     {% endif %}
     {% endcomment %}
     <!-- 链接 -->
-    {% if item.links %}
     <div class="mt-1" style="font-size:0.96rem;">
+        {% if item.links %}
         {% for link in item.links %}
             <a href="{{ link[1] }}" target="_blank" style="margin-right:0.6em;">[{{ link[0] }}]</a>
         {% endfor %}
+        {% endif %}
 
         <!-- Citation Link -->
-        <a href="{{ item.url }}" style="margin-left:0.6em;" class="text-muted" title="View citation">
+        <a href="#" style="margin-left:0.6em;" class="text-muted" title="Cite"
+           data-toggle="modal" data-target="#modal-citation-{{ item.doi | default: item.title | slugify | replace: '-', '' }}"
+           onclick="return false;">
             <i class="fas fa-quote-left"></i>
         </a>
     </div>
-    {% endif %}
+
+    <!-- Citation Modal -->
+    {% include widgets/citation_generator.html item=item %}
 </div>

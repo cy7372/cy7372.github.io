@@ -5,31 +5,30 @@
 {%- assign year = item.date | date: "%Y" -%}
 {%- assign doi = item.doi -%}
 {%- assign vol_iss_page = item.vol_iss_page -%}
+{%- assign author_count = authors | size -%}
 
 {%- comment -%}Generate authors list for different citation formats{%- endcomment -%}
 {%- assign authors_bibtex = "" -%}
 {%- assign authors_apa = "" -%}
 {%- assign authors_gbt = "" -%}
 {%- assign authors_mla = "" -%}
-{%- assign author_count = authors | size -%}
 
 {%- for author in authors -%}
     {%- assign clean_name = author | remove: "*" | remove: "‡" -%}
     {%- assign last_name = clean_name | split: " " | last -%}
     {%- assign first_names = clean_name | remove: last_name | strip -%}
 
-    {%- comment -%}BibTeX: Last, First format{%- endcomment -%}
-    {%- if forloop.last -%}
-        {%- assign authors_bibtex = authors_bibtex | append: "and " | append: last_name | append: ", " | append: first_names -%}
-    {%- else -%}
-        {%- assign authors_bibtex = authors_bibtex | append: last_name | append: ", " | append: first_names | append: " and " -%}
-    {%- endif -%}
+    {%- comment -%}BibTeX: append author, then " and " if not last{%- endcomment -%}
+    {%- assign authors_bibtex = authors_bibtex | append: last_name | append: ", " | append: first_names -%}
+    {%- unless forloop.last -%}
+        {%- assign authors_bibtex = authors_bibtex | append: " and " -%}
+    {%- endunless -%}
 
     {%- comment -%}APA: Last, F. I. format{%- endcomment -%}
     {%- assign initials = "" -%}
     {%- for part in first_names | split: " " -%}
         {%- if part != "" -%}
-            {%- assign initials = initials | append: part | slice: 0 | append: ". " -%}
+            {%- assign initials = initials | append: part | slice: 0 | append: "." -%}
         {%- endif -%}
     {%- endfor -%}
 
@@ -37,26 +36,39 @@
         {%- if forloop.index == 1 -%}
             {%- assign authors_apa = last_name | append: ", " | append: initials -%}
         {%- elsif forloop.index == 2 -%}
-            {%- assign authors_apa = authors_apa | append: last_name | append: ", " | append: initials | append: ", et al." -%}
+            {%- assign authors_apa = authors_apa | append: ", " | append: last_name | append: ", " | append: initials | append: ", et al." -%}
         {%- endif -%}
     {%- else -%}
         {%- assign authors_apa = authors_apa | append: last_name | append: ", " | append: initials -%}
-        {%- if forloop.last == false -%}
-            {%- if author_count > 1 -%}, {% endif -%}
-        {%- endif -%}
+        {%- unless forloop.last -%}
+            {%- assign authors_apa = authors_apa | append: ", " -%}
+        {%- endunless -%}
     {%- endif -%}
 
-    {%- comment -%}GB/T 7714: 姓前名后，姓大写{%- endcomment -%}
-    {%- assign gbt_name = last_name | upcase | append: ", " | append: first_names -%}
+    {%- comment -%}GB/T 7714: 姓大写, 名缩写, 逗号分隔{%- endcomment -%}
+    {%- assign gbt_initials = "" -%}
+    {%- for part in first_names | split: " " -%}
+        {%- if part != "" -%}
+            {%- assign first_char = part | slice: 0 -%}
+            {%- assign gbt_initials = gbt_initials | append: " " | append: first_char -%}
+        {%- endif -%}
+    {%- endfor -%}
+    {%- assign gbt_name = last_name | upcase | append: gbt_initials -%}
+
     {%- if author_count > 3 -%}
         {%- if forloop.index <= 3 -%}
-            {%- assign authors_gbt = authors_gbt | append: gbt_name | append: ", " -%}
+            {%- assign authors_gbt = authors_gbt | append: gbt_name -%}
+            {%- if forloop.index < 3 -%}
+                {%- assign authors_gbt = authors_gbt | append: ", " -%}
+            {%- endif -%}
         {%- elsif forloop.index == 4 -%}
-            {%- assign authors_gbt = authors_gbt | append: "et al." -%}
+            {%- assign authors_gbt = authors_gbt | append: ", et al" -%}
         {%- endif -%}
     {%- else -%}
         {%- assign authors_gbt = authors_gbt | append: gbt_name -%}
-        {%- if forloop.last == false -%}, {% endif -%}
+        {%- unless forloop.last -%}
+            {%- assign authors_gbt = authors_gbt | append: ", " -%}
+        {%- endunless -%}
     {%- endif -%}
 
     {%- comment -%}MLA: First Last format{%- endcomment -%}
@@ -69,16 +81,21 @@
     {%- endif -%}
 {%- endfor -%}
 
-{%- comment -%}Generate BibTeX entry{%- endcomment -%}
-{%- assign bibtex_id = item.doi | default: title | slugify | prepend: year -%}
+{%- comment -%}Generate clean BibTeX key: FirstAuthorLastYearFirstTitleWord{%- endcomment -%}
+{%- assign first_author = authors | first | remove: "*" | remove: "‡" -%}
+{%- assign first_last = first_author | split: " " | last -%}
+{%- assign title_first = title | split: " " | first | remove: ":" | remove: "," | remove: ";" | remove: "." | remove: "!" | remove: "?" | remove: "(" | remove: ")" | remove: "[" | remove: "]" | remove: "{" | remove: "}" | capitalize -%}
+{%- assign bibtex_id = first_last | append: year | append: title_first -%}
+
+{%- comment -%}Generate BibTeX entry — inside capture, { and } are plain text (only {{ }} is Liquid){%- endcomment -%}
 {%- capture bibtex -%}
-@article{{{ bibtex_id }},
-  title={{{ title }}},
-  author={{{ authors_bibtex }}},
-  journal={{{ pub }}},
-  year={{{ year }}}{% if vol_iss_page %},
-  volume={{{ vol_iss_page | split: "," | first }}}{% endif %}{% if doi %},
-  doi={{{ doi }}}{% endif %}
+@article{ {{- bibtex_id -}} },
+  title={ {{- title -}} },
+  author={ {{- authors_bibtex -}} },
+  journal={ {{- pub -}} },
+  year={ {{- year -}} }{% if vol_iss_page %},
+  volume={ {{- vol_iss_page | split: "," | first -}} }{% endif %}{% if doi %},
+  doi={ {{- doi -}} }{% endif %}
 }
 {%- endcapture -%}
 
@@ -89,12 +106,12 @@
 
 {%- comment -%}Generate GB/T 7714 citation{%- endcomment -%}
 {%- capture gbt -%}
-{{ authors_gbt }} {{ title }}[J]. {{ pub }}{% if year %}, {{ year }}{% endif %}{% if vol_iss_page %}: {{ vol_iss_page }}{% endif %}{% if doi %}. DOI:{{ doi }}{% endif %}
+{{ authors_gbt }}. {{ title }}[J]. {{ pub }}{% if year %}, {{ year }}{% endif %}{% if vol_iss_page %}: {{ vol_iss_page }}{% endif %}{% if doi %}. DOI:{{ doi }}{% endif %}
 {%- endcapture -%}
 
 {%- comment -%}Generate MLA citation{%- endcomment -%}
 {%- capture mla -%}
-{{ authors_mla }} "{{ title }}." <i>{{ pub }}</i>{% if vol_iss_page %}, {{ vol_iss_page }}{% endif %}, {{ year }}{% if doi %}. https://doi.org/{{ doi }}{% endif %}
+{{ authors_mla }}. "{{ title }}." <i>{{ pub }}</i>{% if vol_iss_page %}, {{ vol_iss_page }}{% endif %}, {{ year }}{% if doi %}. https://doi.org/{{ doi }}{% endif %}
 {%- endcapture -%}
 
 {%- assign unique_id = item.doi | default: item.title | slugify | replace: "-", "" -%}
