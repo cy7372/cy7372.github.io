@@ -1,62 +1,66 @@
-<div class="row mt-4">
-    <div class="col-md-10 mx-auto">
-        <h2 class="mb-4 font-weight-bold">Honors & Awards</h2>
-        
-        <div class="bg-white shadow-sm rounded p-4">
-            {% assign awards = site.awards | sort: "date" | reverse %}
-            {% for award in awards limit: site.data.display.homepage.num_awards %}
-            <div class="row mb-3 align-items-start {% unless forloop.last %}border-bottom pb-4 mb-4{% endunless %}">
-                <div class="col-md-1 text-center d-none d-md-block pt-1">
-                    {% assign icon_class = "text-primary" %}
-                    {% if award.level contains "First" %}
-                        {% assign icon_class = "text-gold" %}
-                    {% elsif award.level contains "Second" %}
-                        {% assign icon_class = "text-silver" %}
-                    {% elsif award.level contains "Third" %}
-                        {% assign icon_class = "text-bronze" %}
-                    {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
-                        {% assign icon_class = "text-scholarship" %}
-                    {% endif %}
-                    <i class="fas fa-trophy fa-lg {{ icon_class }}"></i>
-                </div>
-                <div class="col-md-9 col-sm-9">
-                    <h5 class="mb-1 text-dark" style="font-weight: 600;">
-                        <a href="{{ award.url | relative_url }}" class="text-dark">{{ award.title }}</a>
-                        {% if award.level %}
-                            {% assign badge_class = "badge-primary" %}
+<div class="row mt-3">
+    <div class="col">
+        <div class="card border-0 shadow-sm bg-white">
+            <div class="card-body p-5">
+                <h4 class="font-weight-bold mb-4">Honors &amp; Awards</h4>
+                <ul class="list-unstyled mb-1">
+                    {% assign awards = site.awards | sort: "rank" %}
+                    {% assign sorted_awards = "" | split: "" %}
+                    {% assign ranks = awards | map: "rank" | uniq | sort %}
+                    {% for rank in ranks %}
+                        {% assign awards_in_rank = awards | where: "rank", rank | sort: "date" | reverse %}
+                        {% for a in awards_in_rank %}
+                            {% assign sorted_awards = sorted_awards | push: a %}
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% for award in sorted_awards limit: site.data.display.homepage.num_awards %}
+                    <li class="media mb-2 align-items-baseline">
+                        <div class="mr-2" style="min-width: 18px; text-align: center;">
+                            {% assign icon_class = "text-primary" %}
+                            {% assign icon_name = "fa-trophy" %}
                             {% if award.level contains "First" %}
-                                {% assign badge_class = "badge-gold" %}
+                                {% assign icon_class = "text-gold" %}
+                                {% assign icon_name = "fa-medal" %}
                             {% elsif award.level contains "Second" %}
-                                {% assign badge_class = "badge-silver" %}
+                                {% assign icon_class = "text-silver" %}
+                                {% assign icon_name = "fa-medal" %}
                             {% elsif award.level contains "Third" %}
-                                {% assign badge_class = "badge-bronze" %}
+                                {% assign icon_class = "text-bronze" %}
+                                {% assign icon_name = "fa-medal" %}
                             {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
-                                {% assign badge_class = "badge-scholarship" %}
+                                {% assign icon_class = "text-scholarship" %}
+                                {% assign icon_name = "fa-graduation-cap" %}
                             {% endif %}
-                            <span class="badge badge-pill {{ badge_class }} ml-2" style="font-size: 0.7em; vertical-align: middle;">{{ award.level }}</span>
-                        {% endif %}
-                    </h5>
-                    {% if award.awarding_body %}
-                        <div class="d-flex text-muted small mt-2">
-                            <div class="mr-2" style="min-width: 15px;"><i class="fas fa-university"></i></div>
+                            <i class="fas {{ icon_name }} {{ icon_class }}"></i>
+                        </div>
+                        <div class="media-body small">
                             <div>
-                                {% assign bodies = award.awarding_body | split: ";" %}
-                                {% for body in bodies %}
-                                    <div>{{ body | strip }}</div>
-                                {% endfor %}
+                                <span class="font-weight-bold text-dark">{{ award.title }}</span>
+                                {% if award.level %}
+                                    {% assign badge_class = "badge-primary" %}
+                                    {% if award.level contains "First" %}
+                                        {% assign badge_class = "badge-gold" %}
+                                    {% elsif award.level contains "Second" %}
+                                        {% assign badge_class = "badge-silver" %}
+                                    {% elsif award.level contains "Third" %}
+                                        {% assign badge_class = "badge-bronze" %}
+                                    {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
+                                        {% assign badge_class = "badge-scholarship" %}
+                                    {% endif %}
+                                    <span class="badge badge-pill {{ badge_class }} ml-1 align-text-bottom" style="font-size: 0.7em;">{{ award.level }}</span>
+                                {% endif %}
                             </div>
                         </div>
-                    {% endif %}
+                        <div class="ml-auto mt-1 text-right text-muted" style="min-width: 60px;">
+                            {{ award.date | date: "%Y" }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="text-right mt-2">
+                    <a href="{{ '/awards.html' | relative_url }}" class="small text-primary">More...</a>
                 </div>
-                <div class="col-md-2 col-sm-3 text-md-right text-muted pt-1">
-                    <span class="font-weight-bold">{{ award.date | date: "%Y" }}</span>
-                </div>
-            </div>
-            {% endfor %}
-            <div class="text-right mt-3">
-                <a href="{{ '/awards.html' | relative_url }}" class="text-primary font-weight-bold">
-                    View All Awards <i class="fas fa-angle-right ml-1"></i>
-                </a>
             </div>
         </div>
     </div>

@@ -1,131 +1,149 @@
 <div class="row mt-3">
-    <div class="col-md-6 mb-3 mb-md-0 pr-md-2">
-        <div class="card border-0 shadow-sm bg-white h-100">
-            <div class="card-body p-4">
-                <div class="row" data-masonry='{"percentPosition": true }'>
+    <div class="col">
+        <div class="card border-0 shadow-sm bg-white">
+            <div class="card-body p-5">
+                <h4 class="font-weight-bold mb-4">Experience</h4>
+
+                <div id="timeline-gantt"></div>
+
+                <script>
+                (function() {
+                    var entries = [];
                     {% if site.data.profile.education %}
-                    <div class="col-12">
-                        <div class="mx-2 my-1">
-                            <h6>Education</h6>
-                            <ul class="list-unstyled mb-1">
-                                {% for item in site.data.profile.education %}
-                                <li class="media mb-1">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
-                                    <div class="media-body">
-                                        <div>{{ item.name }}</div>
-                                        <div class="small">{{ item.dept }}</div>
-                                        <div class="small d-flex justify-content-between">
-                                            <div>{{ item.position }}</div>
-                                            <div class="mt-auto no-break text-right pl-2" style="min-width: 135px;"><em>{{ item.date }}</em></div>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                    {% for item in site.data.profile.education %}
+                    entries.push({
+                        name: {{ item.name | jsonify }},
+                        logo: {{ item.logo | relative_url | jsonify }},
+                        position: {{ item.position | jsonify }},
+                        date: {{ item.date | jsonify }},
+                        type: 'edu'
+                    });
+                    {% endfor %}
                     {% endif %}
 
                     {% if site.data.profile.experience %}
-                    <div class="col-12">
-                        <div class="mx-2 my-1">
-                            <h6>Experience</h6>
-                            <ul class="list-unstyled mb-1">
-                                {% for item in site.data.profile.experience %}
-                                <li class="media mb-1">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
-                                    <div class="media-body">
-                                        <div>{{ item.name }}</div>
-                                        <div class="small">{{ item.dept }}</div>
-                                        <div class="small d-flex justify-content-between">
-                                            <div>{{ item.position }}</div>
-                                            <div class="mt-auto no-break text-right pl-2" style="min-width: 135px;"><em>{{ item.date }}</em></div>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
+                    {% for item in site.data.profile.experience %}
+                    entries.push({
+                        name: {{ item.name | jsonify }},
+                        logo: {{ item.logo | relative_url | jsonify }},
+                        position: {{ item.position | jsonify }},
+                        date: {{ item.date | jsonify }},
+                        type: 'work'
+                    });
+                    {% endfor %}
                     {% endif %}
-                </div>
+
+                    function parseRange(d) {
+                        var m = d.match(/(\w+)\.?\s*(\d{4})\s*[-–—to]+\s*(\w+)\.?\s*(\d{4})/i);
+                        if (!m) m = d.match(/(\w+)\.?\s*(\d{4})/);
+                        if (!m) return {s:{y:2019,m:1}, e:{y:2026,m:12}};
+                        var sm = {'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12};
+                        var smkey = (m[1]||'jan').toLowerCase().substring(0,3);
+                        var sy = parseInt(m[2]);
+                        var emkey = (m[3]||'dec').toLowerCase().substring(0,3);
+                        var ey = parseInt(m[4]||m[2]);
+                        return {
+                            s: {y: sy, m: sm[smkey] || 6},
+                            e: {y: ey, m: sm[emkey] || 6}
+                        };
+                    }
+
+                    // Parse all entries
+                    for (var i = 0; i < entries.length; i++) {
+                        var r = parseRange(entries[i].date);
+                        entries[i].sy = r.s.y;
+                        entries[i].sm = r.s.m;
+                        entries[i].ey = r.e.y;
+                        entries[i].em = r.e.m;
+                        // Convert to fractional year for easier math
+                        entries[i].start = r.s.y + r.s.m/12;
+                        entries[i].end = r.e.y + r.e.m/12;
+                    }
+
+                    // Find time range
+                    var minStart = 2026, maxEnd = 2019;
+                    for (var i = 0; i < entries.length; i++) {
+                        if (entries[i].start < minStart) minStart = entries[i].start;
+                        if (entries[i].end > maxEnd) maxEnd = entries[i].end;
+                    }
+                    minStart = Math.floor(minStart);
+                    maxEnd = Math.ceil(maxEnd);
+                    var totalSpan = maxEnd - minStart;
+
+                    // Greedy lane assignment
+                    var lanes = [];
+                    entries.sort(function(a,b) { return a.start - b.start; });
+                    for (var i = 0; i < entries.length; i++) {
+                        var assigned = -1;
+                        for (var l = 0; l < 20; l++) {
+                            var conflict = false;
+                            for (var j = 0; j < i; j++) {
+                                if (entries[j].lane === l) {
+                                    if (!(entries[i].start >= entries[j].end || entries[i].end <= entries[j].start)) {
+                                        conflict = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!conflict) { assigned = l; break; }
+                        }
+                        entries[i].lane = assigned >= 0 ? assigned : 0;
+                    }
+
+                    // Build HTML
+                    var html = '<div class="tg-wrap">';
+
+                    // Year header row
+                    html += '<div class="tg-header">';
+                    html += '<div class="tg-label-col"></div>';
+                    for (var y = minStart; y <= maxEnd; y++) {
+                        html += '<div class="tg-year">' + y + '</div>';
+                    }
+                    html += '</div>';
+
+                    // One row per lane
+                    var maxLane = 0;
+                    for (var i = 0; i < entries.length; i++) {
+                        if (entries[i].lane > maxLane) maxLane = entries[i].lane;
+                    }
+
+                    for (var l = 0; l <= maxLane; l++) {
+                        html += '<div class="tg-row">';
+                        html += '<div class="tg-label-col"></div>';
+                        for (var y = minStart; y <= maxEnd; y++) {
+                            html += '<div class="tg-cell"></div>';
+                        }
+                        html += '</div>';
+                    }
+
+                    // Overlay bars
+                    var barHtml = '';
+                    for (var i = 0; i < entries.length; i++) {
+                        var e = entries[i];
+                        var left = ((e.start - minStart) / totalSpan) * 100;
+                        var width = Math.max(((e.end - e.start) / totalSpan) * 100, 4);
+                        var topPct = e.lane * 48; // px per lane
+                        var cls = e.type === 'edu' ? 'tg-bar-edu' : 'tg-bar-work';
+
+                        barHtml += '<div class="tg-bar ' + cls + '" style="left:' + left + '%;width:' + width + '%;top:' + (topPct + 4) + 'px;">';
+                        barHtml += '<div class="tg-bar-inner">';
+                        if (e.logo) barHtml += '<img src="' + e.logo + '" class="tg-bar-logo">';
+                        barHtml += '<div class="tg-bar-text">';
+                        barHtml += '<span class="tg-bar-name">' + e.name + '</span>';
+                        if (e.position) barHtml += '<span class="tg-bar-pos">' + e.position.replace(/<br\/>/g, ' · ') + '</span>';
+                        barHtml += '</div>';
+                        barHtml += '<span class="tg-bar-date">' + e.date + '</span>';
+                        barHtml += '</div>';
+                        barHtml += '</div>';
+                    }
+
+                    html += '<div class="tg-bars" style="height:' + ((maxLane + 1) * 48) + 'px;">' + barHtml + '</div>';
+                    html += '</div>';
+
+                    document.getElementById('timeline-gantt').innerHTML = html;
+                })();
+                </script>
             </div>
         </div>
     </div>
-
-    {% if site.data.display.homepage.show_awards %}
-    <div class="col-md-6 pl-md-2">
-        <div class="card border-0 shadow-sm bg-white h-100">
-            <div class="card-body p-4">
-                    <div class="mx-2 my-1">
-                        <h6>Honors & Awards</h6>
-                        <ul class="list-unstyled mb-1">
-                            {% assign awards = site.awards | sort: "rank" %}
-                            
-                            {% comment %} Secondary sort by date (newest first) for awards with same rank {% endcomment %}
-                            {% assign sorted_awards = "" | split: "" %}
-                            {% assign ranks = awards | map: "rank" | uniq | sort %}
-                            
-                            {% for rank in ranks %}
-                                {% assign awards_in_rank = awards | where: "rank", rank | sort: "date" | reverse %}
-                                {% for a in awards_in_rank %}
-                                    {% assign sorted_awards = sorted_awards | push: a %}
-                                {% endfor %}
-                            {% endfor %}
-
-                            {% for award in sorted_awards limit: site.data.display.homepage.num_awards %}
-                            <li class="media mb-2 align-items-baseline">
-                            <div class="mr-2" style="min-width: 18px; text-align: center;">
-                                {% assign icon_class = "text-primary" %}
-                                {% assign icon_name = "fa-trophy" %}
-                                
-                                {% if award.level contains "First" %}
-                                    {% assign icon_class = "text-gold" %}
-                                    {% assign icon_name = "fa-medal" %}
-                                {% elsif award.level contains "Second" %}
-                                    {% assign icon_class = "text-silver" %}
-                                    {% assign icon_name = "fa-medal" %}
-                                {% elsif award.level contains "Third" %}
-                                    {% assign icon_class = "text-bronze" %}
-                                    {% assign icon_name = "fa-medal" %}
-                                {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
-                                    {% assign icon_class = "text-scholarship" %}
-                                    {% assign icon_name = "fa-graduation-cap" %}
-                                {% endif %}
-                                <i class="fas {{ icon_name }} {{ icon_class }}"></i>
-                            </div>
-                            <div class="media-body small">
-                                <div>
-                                    <span class="font-weight-bold text-dark">{{ award.title }}</span>
-                                    {% if award.level %}
-                                        {% assign badge_class = "badge-primary" %}
-                                        {% if award.level contains "First" %}
-                                            {% assign badge_class = "badge-gold" %}
-                                        {% elsif award.level contains "Second" %}
-                                            {% assign badge_class = "badge-silver" %}
-                                        {% elsif award.level contains "Third" %}
-                                            {% assign badge_class = "badge-bronze" %}
-                                        {% elsif award.level == "Undergraduate" or award.level == "Postgraduate" %}
-                                            {% assign badge_class = "badge-scholarship" %}
-                                        {% endif %}
-                                        <span class="badge badge-pill {{ badge_class }} ml-1 align-text-bottom" style="font-size: 0.7em;">{{ award.level }}</span>
-                                    {% endif %}
-                                 </div>
-                             </div>
-                             <div class="ml-auto mt-1 text-right text-muted" style="min-width: 60px;">
-                                {{ award.date | date: "%Y" }}
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    <div class="text-right mt-2">
-                        <a href="{{ '/awards.html' | relative_url }}" class="small text-primary">
-                            More...
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
 </div>

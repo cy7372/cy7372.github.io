@@ -49,17 +49,18 @@ portrait_url: /assets/images/photos/avatar.png
 # portrait_caption: >-
   # Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
 
-# education:
-# - name: Shanghai Jiao Tong Univerisity
-#   logo: /assets/images/badges/SJTU_logo.png 
-#   position: >- 
-#     School Of Oceanography <br/>
-#     Postgraduate Student
-#   date: Sep. 2023 - present
-# - name: Dalian Maritime Univerisity
-#   logo: /assets/images/badges/DLMU_logo.png
-#   position: B.S. in Automation
-#   date: Sep. 2019 - Jul. 2021
+education:
+- name: Shanghai Jiao Tong University
+  logo: /assets/images/badges/SJTU_logo.png
+  position: >-
+    M.S. in Oceanography <br/>
+    School of Oceanography
+  date: Sep. 2023 - Jun. 2026
+- name: Dalian Maritime University
+  logo: /assets/images/badges/DLMU_logo.png
+  position: >-
+    B.S. in Automation
+  date: Sep. 2019 - Jul. 2021
 
 experience:
 # - name: State Key Laboratory of Satellite Ocean Environment Dynamics
