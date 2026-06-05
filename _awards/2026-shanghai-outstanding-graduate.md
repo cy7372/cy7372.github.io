@@ -1,5 +1,5 @@
 ---
-title: "上海市优秀毕业生(SJTU)"
+title: "Shanghai Outstanding Graduate (SJTU)"
 level: "Postgraduate"
 rank: 1
 date: 2026-03-01
