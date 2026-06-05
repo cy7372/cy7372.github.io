@@ -22,6 +22,9 @@
                                 {{ site.data.profile.primary_name }} <small>{{ site.data.profile.secondary_name }}</small>
                             </div>
                         </div>
+                        {% if site.data.profile.nickname %}
+                        <div class="text-muted mb-2" style="font-size: 1.05rem;">@{{ site.data.profile.nickname }}</div>
+                        {% endif %}
                         <div class="text-profile-position">
                             {% for position in site.data.profile.positions %}
                             {% if position.logo -%}
