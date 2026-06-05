@@ -27,21 +27,20 @@ orcid: 0009-0004-3106-0134
 
 short_bio_text_justify: false
 short_bio: >-
-short_bio: >-
   <p>
-    My research focuses on AI for Science in marine and atmospheric (MetOcean) applications, including marine remote sensing, meteorological forecasting and underwater robotics. I aim to use AI methods to address real-world problems and operational needs in these domains, rather than just improving benchmarks. Beyond MetOcean, I am also interested in applying AI to other domain-specific problems, such as materials modeling and EDA.
+    I work at the intersection of AI and the physical world — marine remote sensing, weather forecasting, underwater robotics. I care more about solving real operational problems than chasing benchmarks. When data is scarce, noisy, or refuses to follow the rules, that's where I want to be.
   </p>
 
   <p>
-    On the technical side, I focus on transfer learning and other data-efficient deep learning techniques, as MetOcean data are often scarce, imbalanced or noisy. I also work on AI agents and spatiotemporal forecasting models for weather and maritime service applications.
+    Before my postgraduate studies, I was deep in AI for coding — cross-lingual and cross-task transfer learning, trying to make models generalize with limited labeled data. I also won the National First Prize in the TI Cup Electronic Design Contest, which started my journey from hardware to software to somewhere in between.
   </p>
 
   <p>
-    Before my postgraduate studies, I worked on AI for coding, exploring cross-lingual and cross-task transfer learning to improve model generalization with limited labeled data. I also won the First Prize in the National Undergraduate Electronic Design Contest (TI Cup), which is highly prestigious and widely recognized in China.
+    These days I focus on data-efficient deep learning for MetOcean applications: transfer learning, few-shot adaptation, spatiotemporal forecasting. I also build AI agents for weather and maritime services. Beyond my main area, I'm curious about materials modeling and EDA — wherever domain knowledge and deep learning collide.
   </p>
 
   <p>
-    If you are interested in my work or potential collaboration, please feel free to get in touch.
+    If any of this resonates, feel free to reach out.
   </p>
 
 
