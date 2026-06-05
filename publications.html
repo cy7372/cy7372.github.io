@@ -25,6 +25,12 @@ navbar_title: Publications
             </div>
         </div>
 
+        <div class="text-right mb-3">
+            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modal-cite-all">
+                <i class="fas fa-quote-left mr-1"></i> Cite All
+            </button>
+        </div>
+
         <!-- Publication List -->
         <div id="pubs-list">
             {% assign pubs = site.publications | sort: "date" | reverse %}
@@ -104,3 +110,5 @@ function sortPubs(criteria) {
     });
 }
 </script>
+
+{% include widgets/citation_all.html %}

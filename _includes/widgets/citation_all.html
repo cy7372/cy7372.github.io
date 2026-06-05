@@ -1,0 +1,230 @@
+{%- comment -%}Generate all-publication citation block in all four formats{%- endcomment -%}
+{%- assign all_bibtex = "" -%}
+{%- assign all_apa = "" -%}
+{%- assign all_gbt = "" -%}
+{%- assign all_mla = "" -%}
+{%- assign pubs = site.publications | sort: "date" | reverse -%}
+
+{%- for item in pubs -%}
+    {%- assign authors = item.authors -%}
+    {%- assign title = item.title -%}
+    {%- assign pub = item.pub -%}
+    {%- assign year = item.date | date: "%Y" -%}
+    {%- assign doi = item.doi -%}
+    {%- assign vol_iss_page = item.vol_iss_page -%}
+    {%- assign author_count = authors | size -%}
+
+    {%- comment -%}--- Generate author strings ---{%- endcomment -%}
+    {%- assign authors_bibtex = "" -%}
+    {%- assign authors_apa = "" -%}
+    {%- assign authors_gbt = "" -%}
+    {%- assign authors_mla = "" -%}
+
+    {%- for author in authors -%}
+        {%- assign clean_name = author | remove: "*" | remove: "‡" -%}
+        {%- assign last_name = clean_name | split: " " | last -%}
+        {%- assign first_names = clean_name | remove: last_name | strip -%}
+
+        {%- comment -%}BibTeX authors{%- endcomment -%}
+        {%- assign authors_bibtex = authors_bibtex | append: last_name | append: ", " | append: first_names -%}
+        {%- unless forloop.last -%}
+            {%- assign authors_bibtex = authors_bibtex | append: " and " -%}
+        {%- endunless -%}
+
+        {%- comment -%}APA authors{%- endcomment -%}
+        {%- assign initials = "" -%}
+        {%- for part in first_names | split: " " -%}
+            {%- if part != "" -%}
+                {%- assign initials = initials | append: part | slice: 0 | append: "." -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {%- if author_count > 6 -%}
+            {%- if forloop.index == 1 -%}
+                {%- assign authors_apa = last_name | append: ", " | append: initials -%}
+            {%- elsif forloop.index == 2 -%}
+                {%- assign authors_apa = authors_apa | append: ", " | append: last_name | append: ", " | append: initials | append: ", et al." -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- assign authors_apa = authors_apa | append: last_name | append: ", " | append: initials -%}
+            {%- unless forloop.last -%}
+                {%- assign authors_apa = authors_apa | append: ", " -%}
+            {%- endunless -%}
+        {%- endif -%}
+
+        {%- comment -%}GB/T authors{%- endcomment -%}
+        {%- assign gbt_initials = "" -%}
+        {%- for part in first_names | split: " " -%}
+            {%- if part != "" -%}
+                {%- assign first_char = part | slice: 0 -%}
+                {%- assign gbt_initials = gbt_initials | append: " " | append: first_char -%}
+            {%- endif -%}
+        {%- endfor -%}
+        {%- assign gbt_name = last_name | upcase | append: gbt_initials -%}
+        {%- if author_count > 3 -%}
+            {%- if forloop.index <= 3 -%}
+                {%- assign authors_gbt = authors_gbt | append: gbt_name -%}
+                {%- if forloop.index < 3 -%}
+                    {%- assign authors_gbt = authors_gbt | append: ", " -%}
+                {%- endif -%}
+            {%- elsif forloop.index == 4 -%}
+                {%- assign authors_gbt = authors_gbt | append: ", et al" -%}
+            {%- endif -%}
+        {%- else -%}
+            {%- assign authors_gbt = authors_gbt | append: gbt_name -%}
+            {%- unless forloop.last -%}
+                {%- assign authors_gbt = authors_gbt | append: ", " -%}
+            {%- endunless -%}
+        {%- endif -%}
+
+        {%- comment -%}MLA authors{%- endcomment -%}
+        {%- if forloop.first -%}
+            {%- assign authors_mla = authors_mla | append: clean_name -%}
+        {%- elsif forloop.last -%}
+            {%- assign authors_mla = authors_mla | append: ", and " | append: clean_name -%}
+        {%- else -%}
+            {%- assign authors_mla = authors_mla | append: ", " | append: clean_name -%}
+        {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%}--- BibTeX key ---{%- endcomment -%}
+    {%- assign first_author = authors | first | remove: "*" | remove: "‡" -%}
+    {%- assign first_last = first_author | split: " " | last -%}
+    {%- assign title_first = title | split: " " | first | remove: ":" | remove: "," | remove: ";" | remove: "." | remove: "!" | remove: "?" | remove: "(" | remove: ")" | remove: "[" | remove: "]" | remove: "{" | remove: "}" | capitalize -%}
+    {%- assign bibtex_id = first_last | append: year | append: title_first -%}
+
+    {%- comment -%}--- Build BibTeX entry ---{%- endcomment -%}
+    {%- capture entry -%}
+@article{ {{- bibtex_id -}} },
+  title={ {{- title -}} },
+  author={ {{- authors_bibtex -}} },
+  journal={ {{- pub -}} },
+  year={ {{- year -}} }{% if vol_iss_page %},
+  volume={ {{- vol_iss_page | split: "," | first -}} }{% endif %}{% if doi %},
+  doi={ {{- doi -}} }{% endif %}
+}
+{%- endcapture -%}
+    {%- assign all_bibtex = all_bibtex | append: entry | append: "@@" -%}
+
+    {%- capture apa_entry -%}
+{{- authors_apa }} ({{ year }}). {{ title }}. *{{ pub }}*{% if vol_iss_page %}, {{ vol_iss_page }}{% endif %}{% if doi %}. https://doi.org/{{ doi }}{% endif %}.
+{%- endcapture -%}
+    {%- assign all_apa = all_apa | append: apa_entry | append: "@@" -%}
+
+    {%- capture gbt_entry -%}
+[{{ forloop.index }}] {{ authors_gbt }}. {{ title }}[J]. {{ pub }}{% if year %}, {{ year }}{% endif %}{% if vol_iss_page %}: {{ vol_iss_page }}{% endif %}{% if doi %}. DOI:{{ doi }}{% endif %}.
+{%- endcapture -%}
+    {%- assign all_gbt = all_gbt | append: gbt_entry | append: "@@" -%}
+
+    {%- capture mla_entry -%}
+{{- authors_mla }}. "{{ title }}." *{{ pub }}*{% if vol_iss_page %}, {{ vol_iss_page }}{% endif %}, {{ year }}{% if doi %}. https://doi.org/{{ doi }}{% endif %}.
+{%- endcapture -%}
+    {%- assign all_mla = all_mla | append: mla_entry | append: "@@" -%}
+{%- endfor -%}
+
+{%- capture bibtex_all -%}
+{%- assign entries = all_bibtex | split: "@@" -%}
+{%- for entry in entries -%}
+{%- unless entry == "" -%}
+{{ entry }}
+{% endunless -%}
+{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture apa_all -%}
+{%- assign entries = all_apa | split: "@@" -%}
+{%- for entry in entries -%}
+{%- unless entry == "" -%}
+{{ entry }}
+{% endunless -%}
+{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture gbt_all -%}
+{%- assign entries = all_gbt | split: "@@" -%}
+{%- for entry in entries -%}
+{%- unless entry == "" -%}
+{{ entry }}
+{% endunless -%}
+{%- endfor -%}
+{%- endcapture -%}
+
+{%- capture mla_all -%}
+{%- assign entries = all_mla | split: "@@" -%}
+{%- for entry in entries -%}
+{%- unless entry == "" -%}
+{{ entry }}
+{% endunless -%}
+{%- endfor -%}
+{%- endcapture -%}
+
+<!-- Cite All Modal -->
+<div class="modal fade" id="modal-cite-all" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-quote-left mr-2"></i>Cite All Publications</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#bibtex-all" role="tab">
+                            <i class="fas fa-code mr-1"></i>BibTeX ({{ pubs | size }})
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#apa-all" role="tab">APA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#gbt-all" role="tab">GB/T 7714</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#mla-all" role="tab">MLA</a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="bibtex-all" role="tab">
+                        <div class="position-relative">
+                            <pre class="bg-light p-3 rounded border" style="max-height: 400px; overflow-y: auto; font-size: 0.82rem;"><code id="bibtex-all-content">{%- assign bibtex_lines = bibtex_all | newline_to_br | split: "<br />" -%}
+{%- for line in bibtex_lines -%}
+{{ line | strip }}
+{% endfor -%}</code></pre>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('bibtex-all-content')">
+                                <i class="fas fa-copy"></i> Copy All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="apa-all" role="tab">
+                        <div class="position-relative">
+                            <div class="bg-light p-3 rounded border" style="max-height: 400px; overflow-y: auto; font-size: 0.9rem; font-family: inherit; white-space: pre-wrap;" id="apa-all-content">{{ apa_all }}</div>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('apa-all-content')">
+                                <i class="fas fa-copy"></i> Copy All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gbt-all" role="tab">
+                        <div class="position-relative">
+                            <div class="bg-light p-3 rounded border" style="max-height: 400px; overflow-y: auto; font-size: 0.9rem; font-family: inherit; white-space: pre-wrap;" id="gbt-all-content">{{ gbt_all }}</div>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('gbt-all-content')">
+                                <i class="fas fa-copy"></i> Copy All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="mla-all" role="tab">
+                        <div class="position-relative">
+                            <div class="bg-light p-3 rounded border" style="max-height: 400px; overflow-y: auto; font-size: 0.9rem; font-family: inherit; white-space: pre-wrap;" id="mla-all-content">{{ mla_all }}</div>
+                            <button class="btn btn-sm btn-outline-primary position-absolute" style="top: 8px; right: 8px;" onclick="copyToClipboard('mla-all-content')">
+                                <i class="fas fa-copy"></i> Copy All
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
