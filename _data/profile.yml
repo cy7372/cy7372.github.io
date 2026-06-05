@@ -49,27 +49,21 @@ portrait_url: /assets/images/photos/avatar.png
 # portrait_caption: >-
   # Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
 
-education:
-- name: Shanghai Jiao Tong University
-  logo: /assets/images/badges/SJTU_logo.png
-  position: M.Sc. Graduate
-  date: Sep. 2023 - Jun. 2026
-
 experience:
-# - name: State Key Laboratory of Satellite Ocean Environment Dynamics
-#   logo: /assets/images/badges/SOED_logo.png 
-#   # position: Research Intern
-#   date: Sep. 2023 - present
 - name: Eastern Institute for Advanced Study
   logo: /assets/images/badges/EIAS_logo.png
   position: Research Assistant
   date: Sep. 2025 - Dec. 2025
 
-
 - name: Shanghai Meteorological Service Center
   logo: /assets/images/badges/SMS_logo.png
   position: Intern
   date: Jul. 2025 - Aug. 2025
+
+- name: Shanghai Jiao Tong University
+  logo: /assets/images/badges/SJTU_logo.png
+  position: M.Sc. Graduate
+  date: Sep. 2023 - Jun. 2026
 
 - name: Second Institute of Oceanography, MNR
   logo: /assets/images/badges/SIO_logo.png
