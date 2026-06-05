@@ -1,53 +1,42 @@
 <div class="row mt-3">
     <div class="col">
         <div class="card border-0 shadow-sm bg-white">
-            <div class="card-body p-5">
-                <h4 class="font-weight-bold mb-4">Experience</h4>
-
-                <div class="row">
-                    {% if site.data.profile.education %}
-                    <div class="col-md-6">
-                        <h6 class="text-muted font-weight-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;">Education</h6>
-                        <div class="timeline-v">
-                            {% for item in site.data.profile.education %}
-                            <div class="tl-item">
-                                <div class="tl-marker tl-edu">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" class="tl-logo">
-                                </div>
-                                <div class="tl-body">
-                                    <div class="tl-name">{{ item.name }}</div>
-                                    {% if item.position and item.position != "" %}
-                                    <div class="tl-pos">{{ item.position }}</div>
-                                    {% endif %}
-                                    <div class="tl-date">{{ item.date }}</div>
+            <div class="card-body p-4">
+                <div class="mx-2 my-1">
+                    <h6>Experience</h6>
+                    <ul class="list-unstyled mb-1">
+                        {% if site.data.profile.education %}
+                        {% for item in site.data.profile.education %}
+                        <li class="media mb-1">
+                            <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
+                            <div class="media-body">
+                                <div>{{ item.name }}</div>
+                                <div class="small">{{ item.dept }}</div>
+                                <div class="small d-flex justify-content-between">
+                                    <div>{{ item.position }}</div>
+                                    <div class="mt-auto no-break text-right pl-2" style="min-width: 135px;"><em>{{ item.date }}</em></div>
                                 </div>
                             </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
+                        </li>
+                        {% endfor %}
+                        {% endif %}
 
-                    {% if site.data.profile.experience %}
-                    <div class="col-md-6">
-                        <h6 class="text-muted font-weight-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.08em;">Work</h6>
-                        <div class="timeline-v">
-                            {% for item in site.data.profile.experience %}
-                            <div class="tl-item">
-                                <div class="tl-marker tl-work">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" class="tl-logo">
-                                </div>
-                                <div class="tl-body">
-                                    <div class="tl-name">{{ item.name }}</div>
-                                    {% if item.position and item.position != "" %}
-                                    <div class="tl-pos">{{ item.position }}</div>
-                                    {% endif %}
-                                    <div class="tl-date">{{ item.date }}</div>
+                        {% if site.data.profile.experience %}
+                        {% for item in site.data.profile.experience %}
+                        <li class="media mb-1">
+                            <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
+                            <div class="media-body">
+                                <div>{{ item.name }}</div>
+                                <div class="small">{{ item.dept }}</div>
+                                <div class="small d-flex justify-content-between">
+                                    <div>{{ item.position }}</div>
+                                    <div class="mt-auto no-break text-right pl-2" style="min-width: 135px;"><em>{{ item.date }}</em></div>
                                 </div>
                             </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endif %}
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </div>
