@@ -4,7 +4,13 @@
             <div class="card-body p-5">
                 <h4 class="font-weight-bold mb-4">Honors &amp; Awards</h4>
                 <ul class="list-unstyled mb-1">
-                    {% assign featured = site.awards | where_exp: "a", "a.featured_order" | sort: "featured_order" %}
+                    {% assign featured = "" | split: "" %}
+                    {% for award in site.awards %}
+                      {% if award.featured_order %}
+                        {% assign featured = featured | push: award %}
+                      {% endif %}
+                    {% endfor %}
+                    {% assign featured = featured | sort: "featured_order" %}
 
                     {% for award in featured %}
                     <li class="media mb-2 align-items-baseline">

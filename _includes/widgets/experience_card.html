@@ -30,18 +30,16 @@
             <div class="card-body p-4">
                 <div class="mx-2 my-1">
                     <h6>Honors &amp; Awards</h6>
-                    <ul class="list-unstyled mb-1">
-                        {% assign awards = site.awards | sort: "rank" %}
-                        {% assign sorted_awards = "" | split: "" %}
-                        {% assign ranks = awards | map: "rank" | uniq | sort %}
-                        {% for rank in ranks %}
-                            {% assign awards_in_rank = awards | where: "rank", rank | sort: "date" | reverse %}
-                            {% for a in awards_in_rank %}
-                                {% assign sorted_awards = sorted_awards | push: a %}
-                            {% endfor %}
+                    <ul class="list-unstyled mb-0">
+                        {% assign featured = "" | split: "" %}
+                        {% for award in site.awards %}
+                          {% if award.featured_order %}
+                            {% assign featured = featured | push: award %}
+                          {% endif %}
                         {% endfor %}
+                        {% assign featured = featured | sort: "featured_order" %}
 
-                        {% for award in sorted_awards limit: site.data.display.homepage.num_awards %}
+                        {% for award in featured %}
                         <li class="media mb-2 align-items-baseline">
                             <div class="mr-2" style="min-width: 18px; text-align: center;">
                                 {% assign icon_class = "text-primary" %}
@@ -85,7 +83,7 @@
                         </li>
                         {% endfor %}
                     </ul>
-                    <div class="text-right mt-2">
+                    <div class="text-right mt-0">
                         <a href="{{ '/awards.html' | relative_url }}" class="small text-primary">More...</a>
                     </div>
                 </div>
