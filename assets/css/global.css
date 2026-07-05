@@ -197,3 +197,58 @@ div.lazy {
     border-top: 1px solid #e9ecef;
 }
 
+/* ------------------------------------------------------------------ */
+/* Mobile Optimizations */
+/* ------------------------------------------------------------------ */
+
+/* Prevent horizontal overflow / scroll on narrow viewports */
+html, body {
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+}
+
+/* Larger touch targets for links on mobile (Apple/Google recommend 44px) */
+@media (max-width: 768px) {
+    .nav-link {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Tighter card padding on mobile */
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* Prevent long URLs/DOIs from overflowing */
+    a, .text-break-all {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    /* Citation modal pre blocks: smaller font and word wrap on mobile */
+    [id^="modal-citation-"] pre code,
+    #bibtex-all-content {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    /* Publication cards: reduce internal padding on mobile */
+    .pub-item .card,
+    .award-item {
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* Sort buttons: full-width friendly on mobile */
+    .btn-group-sm .btn {
+        padding: 0.35rem 0.6rem;
+    }
+}
+
+/* Improve rendering on high-DPI mobile screens */
+@supports (-webkit-touch-callout: none) {
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+

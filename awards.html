@@ -6,9 +6,9 @@ navbar_title: Awards
 
 <div class="row mt-4">
     <div class="col-md-10 mx-auto">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="font-weight-bold mb-0">Honors & Awards</h2>
-            <div class="btn-group btn-group-sm" role="group" aria-label="Sort awards">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+            <h2 class="font-weight-bold mb-2 mb-md-0">Honors & Awards</h2>
+            <div class="btn-group btn-group-sm align-self-md-end align-self-start" role="group" aria-label="Sort awards">
                 <button type="button" class="btn btn-outline-secondary active" id="sort-by-date" onclick="sortAwards('date')">
                     <i class="fas fa-calendar-alt mr-1"></i> Date
                 </button>
@@ -47,7 +47,7 @@ navbar_title: Awards
                         <i class="fas {{ icon_name }} mr-2 {{ icon_class }}"></i>
                         <a href="{{ award.url | relative_url }}" class="text-dark">{{ award.title }}</a>
                     </h5>
-                    <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 120px;">
+                    <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 90px;">
                         {{ award.date | date: "%b %Y" }}
                     </div>
                 </div>

@@ -27,7 +27,6 @@ orcid: 0009-0004-3106-0134
 
 short_bio_text_justify: false
 short_bio: >-
-short_bio: >-
   <p>
     My research focuses on AI for Science in marine and atmospheric (MetOcean) applications, including marine remote sensing, meteorological forecasting and underwater robotics. I aim to use AI methods to address real-world problems and operational needs in these domains, rather than just improving benchmarks. Beyond MetOcean, I am also interested in applying AI to other domain-specific problems, such as materials modeling and EDA.
   </p>
