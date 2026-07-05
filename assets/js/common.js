@@ -38,4 +38,14 @@ $(function () {
     $(".lazy").on("load", function () {
         $grid.masonry('layout');
     });
+
+    // Auto-collapse navbar on mobile after clicking a nav link
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(function(link) {
+        link.addEventListener('click', function() {
+            var collapse = document.getElementById('navbarResponsive');
+            if (collapse && collapse.classList.contains('show')) {
+                $('.navbar-collapse').collapse('hide');
+            }
+        });
+    });
 })

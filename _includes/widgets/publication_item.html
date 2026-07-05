@@ -2,11 +2,11 @@
 <!-- 外层卡片，阴影、留白、下间距，简洁美观 -->
 <div class="card shadow-sm mb-2 px-4 py-3 border-0" style="background: #fff;">
     <!-- 论文标题 + 日期 -->
-    <div class="d-flex justify-content-between align-items-start mt-1 mb-2">
-        <h5 class="font-weight-bold mb-0" style="font-size: 1.2rem; flex: 1;">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-start mt-1 mb-2">
+        <h5 class="font-weight-bold mb-2 mb-md-0" style="font-size: 1.2rem; flex: 1;">
             <a href="{{ item.url }}" class="text-dark">{{ item.title }}</a>
         </h5>
-        <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 90px;">
+        <div class="text-muted text-md-right no-break" style="font-size: 0.9rem;">
             {{ item.date | date: "%b %d, %Y" }}
         </div>
     </div>

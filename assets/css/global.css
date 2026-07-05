@@ -225,6 +225,12 @@ html, body {
         overflow-wrap: break-word;
     }
 
+    /* DOI links: force break to prevent overflow */
+    .pub-item a[href*="doi.org"],
+    .publication-meta a[href*="doi.org"] {
+        word-break: break-all;
+    }
+
     /* Citation modal pre blocks: smaller font and word wrap on mobile */
     [id^="modal-citation-"] pre code,
     #bibtex-all-content {
@@ -241,6 +247,52 @@ html, body {
     /* Sort buttons: full-width friendly on mobile */
     .btn-group-sm .btn {
         padding: 0.35rem 0.6rem;
+    }
+
+    /* Citation modal tabs: scrollable on mobile to prevent wrapping */
+    [id^="modal-citation-"] .nav-tabs,
+    #modal-cite-all .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    [id^="modal-citation-"] .nav-tabs .nav-link,
+    #modal-cite-all .nav-tabs .nav-link {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+
+    /* Publication detail metadata: add spacing when stacked */
+    .publication-meta .col-md-4 {
+        margin-bottom: 0.15rem;
+    }
+    .publication-meta .col-md-8 {
+        margin-bottom: 0.6rem;
+    }
+
+    /* Author list: slightly smaller font on mobile for long author strings */
+    .pub-item div[style*="1.01rem"] {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Extra small screens (phones <576px) */
+@media (max-width: 576px) {
+    /* Reduce body font size slightly for better content density */
+    body {
+        font-size: 0.95rem;
+    }
+
+    /* News card title size */
+    .news-card-item b[style*="1.05em"] {
+        font-size: 0.95em !important;
+    }
+
+    /* WeChat modal: larger on phone for easier scanning */
+    #modal-wechat .modal-dialog.modal-sm {
+        max-width: 92vw;
+        margin: 1rem auto;
     }
 }
 

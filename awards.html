@@ -25,8 +25,8 @@ navbar_title: Awards
                  data-rank="{{ award.rank | default: 99 }}" 
                  data-date="{{ award.date | date: '%s' }}">
                 
-                <div class="d-flex justify-content-between align-items-start mt-1 mb-2">
-                    <h5 class="font-weight-bold mb-0" style="font-size: 1.2rem; flex: 1;">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-start mt-1 mb-2">
+                    <h5 class="font-weight-bold mb-2 mb-md-0" style="font-size: 1.2rem; flex: 1;">
                         {% assign icon_class = "text-primary" %}
                         {% assign icon_name = "fa-trophy" %}
 
@@ -47,7 +47,7 @@ navbar_title: Awards
                         <i class="fas {{ icon_name }} mr-2 {{ icon_class }}"></i>
                         <a href="{{ award.url | relative_url }}" class="text-dark">{{ award.title }}</a>
                     </h5>
-                    <div class="text-muted ml-3 pt-1 text-right no-break" style="font-size: 0.9rem; min-width: 90px;">
+                    <div class="text-muted text-md-right no-break" style="font-size: 0.9rem;">
                         {{ award.date | date: "%b %Y" }}
                     </div>
                 </div>
